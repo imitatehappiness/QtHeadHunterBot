@@ -135,7 +135,7 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
     setDefaultStyleTextBrowser();
 
     if(httpStatusCode != 200){
-        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> Possible reasons: <br>");
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">Possible reasons: <br>");
         ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> 1. Parameters are set incorrectly<br>");
         ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> 2. The resume was updated less than 4 hours ago<br><br>");
     }
@@ -252,6 +252,7 @@ void MainWindow::on_pB_startAutoUpdate_clicked(){
         ui->pB_startAutoUpdate->setEnabled(false);
         ui->pB_stopAutoUpdate->setEnabled(true);
     }
+    clearFocus();
 }
 
 
@@ -267,5 +268,6 @@ void MainWindow::on_pB_stopAutoUpdate_clicked(){
     ui->pB_stopAutoUpdate->setEnabled(false);
 
     MoveCursorToEnd();
+    clearFocus();
 }
 
