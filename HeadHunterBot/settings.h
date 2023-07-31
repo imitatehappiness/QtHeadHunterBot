@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QObject>
-#include <QString>
 
 /**
  * @brief The Settings class provides a singleton object for managing application settings.

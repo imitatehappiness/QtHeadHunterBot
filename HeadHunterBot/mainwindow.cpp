@@ -10,7 +10,6 @@
 #include <QCloseEvent>
 #include <QIcon>
 #include <QDateTime>
-#include <QTextCharFormat>
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,10 +19,10 @@ MainWindow::MainWindow(QWidget *parent)
     , mLoadSetting(new QAction(tr("&Load"),this))
     , mSaveSetting(new QAction(tr("&Save"),this))
     , mTimer(new QTimer)
-    , trayMenu(new QMenu(this))
-    , trayIcon(new QSystemTrayIcon(this))
-    , viewWindow(new QAction("View window", this))
-    , quitAction(new QAction("Exit", this))
+    , mTrayMenu(new QMenu(this))
+    , mTrayIcon(new QSystemTrayIcon(this))
+    , mViewWindow(new QAction("View window", this))
+    , mQuitAction(new QAction("Exit", this))
     , mManager(new QNetworkAccessManager)
 {
     ui->setupUi(this);
@@ -36,22 +35,23 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mLoadSetting, SIGNAL(triggered()), this, SLOT(loadSetting()));
     connect(mSaveSetting, SIGNAL(triggered()), this, SLOT(saveSetting()));
 
-    mTimer->setInterval(14400000);// 4 hour
+    /// 14400000 milliseconds equals 4 hours
+    mTimer->setInterval(14400000);
 
     connect(mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
     connect(mTimer, SIGNAL(timeout()), this, SLOT(requestOnTimer()));
 
-    connect(viewWindow, SIGNAL(triggered()), this, SLOT(show()));
-    connect(quitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(mViewWindow, SIGNAL(triggered()), this, SLOT(show()));
+    connect(mQuitAction, SIGNAL(triggered()), this, SLOT(close()));
 
-    trayMenu->addAction(viewWindow);
-    trayMenu->addAction(quitAction);
+    mTrayMenu->addAction(mViewWindow);
+    mTrayMenu->addAction(mQuitAction);
 
-    trayIcon->setIcon((QIcon(":/resources/icons/hh-logo.png")));
-    trayIcon->setContextMenu(trayMenu);
-    trayIcon->show();
+    mTrayIcon->setIcon((QIcon(":/resources/icons/hh-logo.png")));
+    mTrayIcon->setContextMenu(mTrayMenu);
+    mTrayIcon->show();
 
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    connect(mTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
 }
 
@@ -65,7 +65,7 @@ void MainWindow::closeEvent(QCloseEvent *event){
         this->hide();
 
         QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::MessageIcon(QSystemTrayIcon::Information);
-        trayIcon->showMessage("Tray Program", "", icon, 2000);
+        mTrayIcon->showMessage("Tray Program", "", icon, 2000);
     }
 }
 
