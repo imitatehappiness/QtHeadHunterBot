@@ -1,4 +1,10 @@
-# AutoHeadHunterUpdate
+
+<p align="center">
+  <a href="https://github.com/imitatehappiness/QtHeadHunterBot">
+    <img src="https://cdn-icons-png.flaticon.com/512/5494/5494942.png" alt="Logo" width="200" height="200">  
+  </a>
+
+# Auto HeadHunter Resume Update
 
 ## Description
 AutoHeadHunterUpdate is a C++ QT application with a graphical user interface designed to facilitate the automatic and manual updating of your resume on the HeadHunter job portal. The application requires the following fields to function properly:
@@ -11,22 +17,22 @@ AutoHeadHunterUpdate is a C++ QT application with a graphical user interface des
 The application offers two main modes of updating:
 
 + **One-Time Update:** Allows you to manually update your resume on the HeadHunter website instantly.
-+ **Auto-Update:** Automatically updates your resume every 4 hours to ensure that your information is always up-to-date.
++ **Auto-Update:** Automatically updates your resume every 4 hours.
+
+## Where to find the necessary parameters
+
++ hhtoken, hhuid, xsrf can be seen in the Web Console after clicking the "Update Date" button. Select our POST request and go to the Cookies tab. In the list you can find the necessary values.
++ resume id can be found in the address bar on the resume page
+
+>The data must be entered once and then saved to a file: Setting->Save
 
 ## Features
 + **Background Mode:** The application can run in the background, silently updating your resume without interfering with your other tasks.
-+ **Settings Management:** The application saves your configuration settings, so you don't need to re-enter your credentials each time you start it.
++ **Settings Management:** The application provides the option to save and load your configuration settings using JSON files. This feature allows you to persistently store your credentials and update preferences, so you don't need to re-enter them each time you start the application.
 + **Graphical User Interface (GUI):** The user-friendly GUI allows easy navigation and interaction with the application.
 + **Automated Updates:** Enable the auto-update feature to keep your resume current without manual intervention.
 
-## Usage
-1. Launch the AutoHeadHunterUpdate application.
-2. In the settings section, provide your id resume, hhtoken, hhuid, and xsrf credentials.
-3. Choose the desired update mode: one-time update or auto-update.
-4. If you opt for auto-update, set the update interval to 4 hours.
-5. Click on the "Save Settings" button to store your credentials for future use.
-6. If you enabled auto-update, the application will silently update your resume every 4 hours.
-7. To perform a manual one-time update, click on the "Update Now" button.
-8. The application will display status messages indicating the success or failure of the update process.
-
 ## Example
+<p align="center">
+  <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/c4d64c8e-de63-4c28-8f8c-822395692198" />
+</p>
