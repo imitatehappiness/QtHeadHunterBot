@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "settings.h"
+#include "PopUp.h"
 
 #include <QFileDialog>
 #include <QNetworkRequest>
@@ -11,6 +12,8 @@
 #include <QIcon>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QTextCursor>
+#include <QMediaPlayer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -24,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mViewWindow(new QAction("View window", this))
     , mQuitAction(new QAction("Exit", this))
     , mManager(new QNetworkAccessManager)
+    , mNotification(new PopUp(this))
 {
     ui->setupUi(this);
 
@@ -113,10 +117,32 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
     QString httpStatusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute ).toString();
     QString httpReasonPhrase = reply->attribute( QNetworkRequest::HttpReasonPhraseAttribute ).toString();
 
-    ui->tE_logInfo->append(getCurrentDateTime() + "\nAnswer from server:");
-    ui->tE_logInfo->append("Code: " + httpStatusCode);
-    ui->tE_logInfo->append("Status: " + httpReasonPhrase);
-    ui->tE_logInfo->append("");
+    QString color;
+
+    if(httpStatusCode == 200){
+        color = "green";
+        mNotification->setPopupText("Resume is updated!");
+    }else{
+        mNotification->setPopupText("Resume not updated!\nCode: " + httpStatusCode);
+        color = "red";
+    }
+
+    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">[" + getCurrentDateTime() + "]</strong>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">Answer from server: </strong>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span><br><br>");
+
+    setDefaultStyleTextBrowser();
+
+    if(httpStatusCode != 200){
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> Possible reasons: <br>");
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> 1. Parameters are set incorrectly<br>");
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> 2. The resume was updated less than 4 hours ago<br><br>");
+    }
+
+    playSound("resources/sounds/notify.mp3");
+    mNotification->show();
+    MoveCursorToEnd();
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason){
@@ -163,7 +189,7 @@ void MainWindow::sendRequest(){
 
 QString MainWindow::getCurrentDateTime(){
     QDateTime currentDateTime = QDateTime::currentDateTime();
-    return currentDateTime.toString(Qt::DefaultLocaleLongDate);
+    return currentDateTime.toString(Qt::DefaultLocaleShortDate);
 }
 
 bool MainWindow::fieldsIsEmpty(){
@@ -180,6 +206,26 @@ void MainWindow::showMessageBox(const QString &mesasge){
     msgBox.exec();
 }
 
+void MainWindow::MoveCursorToEnd(){
+    QTextCursor cursor = ui->tE_logInfo->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    ui->tE_logInfo->setTextCursor(cursor);
+}
+
+void MainWindow::setDefaultStyleTextBrowser(){
+    QTextCursor cursor = ui->tE_logInfo->textCursor();
+    QTextCharFormat defaultFormat;
+    cursor.setCharFormat(defaultFormat);
+    ui->tE_logInfo->setTextCursor(cursor);
+}
+
+void MainWindow::playSound(const QString &path){
+    QMediaPlayer *player = new QMediaPlayer(this);
+    player->setMedia(QUrl::fromLocalFile(path));
+    player->setVolume(70);
+    player->play();
+}
+
 
 void MainWindow::on_pB_updateResume_clicked(){
     if(fieldsIsEmpty()){
@@ -194,8 +240,10 @@ void MainWindow::on_pB_startAutoUpdate_clicked(){
     if(fieldsIsEmpty()){
         showMessageBox("Fill in all the fields!\t\t\n");
     }else{
-        ui->tE_logInfo->append(getCurrentDateTime() + "\nTimer started");
-        ui->tE_logInfo->append("");
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">[" + getCurrentDateTime() + "]</strong>");
+        ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> Auto Update started </strong> <br><br>");
+
+        setDefaultStyleTextBrowser();
 
         sendRequest();
 
@@ -208,12 +256,16 @@ void MainWindow::on_pB_startAutoUpdate_clicked(){
 
 
 void MainWindow::on_pB_stopAutoUpdate_clicked(){
-    ui->tE_logInfo->append(getCurrentDateTime() + "\nTimer stoped");
-    ui->tE_logInfo->append("");
+    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">[" + getCurrentDateTime() + "]</strong>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> Auto Update stoped </strong> <br><br>");
+
+    setDefaultStyleTextBrowser();
 
     mTimer->stop();
 
     ui->pB_startAutoUpdate->setEnabled(true);
     ui->pB_stopAutoUpdate->setEnabled(false);
+
+    MoveCursorToEnd();
 }
 

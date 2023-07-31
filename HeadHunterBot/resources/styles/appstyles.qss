@@ -8,8 +8,7 @@
 
 QMainWindow {
     background-color: rgb(24, 24, 24);
-    min-width: 600px;
-
+    min-width: 700px;
 }
 
 /* ========================== QLineEdit ========================== */
@@ -67,7 +66,10 @@ QPushButton:!enabled{
 QTextBrowser{
     border-radius: 8px;
     border: 2px solid #eeeeee;
+    min-width: 300px;
 }
+
+/* ========================== QToolTip ========================== */
 
 QToolTip{
     background-color: #eeeeee;

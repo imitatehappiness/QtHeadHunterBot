@@ -11,6 +11,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+class PopUp;
 
 class MainWindow : public QMainWindow{
     Q_OBJECT
@@ -101,6 +102,18 @@ private:
     * @param message The message to be displayed in the message box.
     */
     void showMessageBox(const QString& mesasge);
+    /**
+    * @brief Move the cursor to the end text browser
+    */
+    void MoveCursorToEnd();
+    /**
+    * @brief Set default style for text browser
+    */
+    void setDefaultStyleTextBrowser();
+    /**
+    * @brief play notify sound
+    */
+    void playSound(const QString& path);
 private:
     Ui::MainWindow *ui;
 
@@ -115,4 +128,7 @@ private:
     QAction *mQuitAction;               /// Action to quit the application from the system tray
 
     QNetworkAccessManager *mManager;    /// Network access manager for handling HTTP requests
+
+    PopUp* mNotification;               /// Popup notification
+
 };

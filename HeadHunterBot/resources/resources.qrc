@@ -2,5 +2,6 @@
     <qresource prefix="/resources">
         <file>icons/hh-logo.png</file>
         <file>styles/appstyles.qss</file>
+        <file>sounds/notify.mp3</file>
     </qresource>
 </RCC>
