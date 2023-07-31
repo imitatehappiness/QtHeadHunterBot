@@ -1,0 +1,62 @@
+/* ========================== Variables =======================*/
+
+*{
+    font: 9pt "Arial";
+}
+
+/* ========================== QMainWindow =======================*/
+
+QMainWindow {
+    background-color: rgb(24, 24, 24);
+    min-width: 600px;
+
+}
+
+/* ========================== QLineEdit ========================== */
+
+QLineEdit {
+    border-radius: 8px;
+    border: 2px solid #e0e4e7;
+    padding: 5px 15px;
+    max-width: 250px;
+
+}
+
+QLineEdit:focus {
+    border: 2px solid #0d6efd;
+
+}
+
+QLineEdit::placeholder {
+    color: #767e89;
+}
+
+QPushButton {
+    background-color: #0d6efd;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 8px;
+    border: 2px solid #0d6efd;
+    padding: 5px 15px;
+    outline: 0px;
+    max-width: 250px;
+}
+
+QPushButton:hover{
+    background-color: #0b5ed7;
+}
+
+QPushButton:pressed{
+    background-color: #0b5ed7;
+    border-bottom: rgb(24, 24, 24);
+}
+
+QPushButton:!enabled{
+    background-color: gray;
+    border: 2px solid gray;
+}
+
+QTextBrowser{
+    border-radius: 8px;
+    border: 2px solid #eeeeee;
+}
