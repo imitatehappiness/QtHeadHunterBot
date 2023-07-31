@@ -1,0 +1,2 @@
+# QtHeadHunterBot
+Resume auto-update
