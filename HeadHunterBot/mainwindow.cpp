@@ -164,16 +164,20 @@ bool MainWindow::fieldsIsEmpty(){
     return ui->lE_idResume->text() == "" || ui->lE_hhtoken->text() == "" || ui->lE_hhuid->text() == "" || ui->lE_xsrf->text() == "";
 }
 
+void MainWindow::showMessageBox(const QString &mesasge){
+    QMessageBox msgBox;
+    msgBox.setText(mesasge);
+    msgBox.setStandardButtons( QMessageBox::Cancel);
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowIcon(QIcon(":/resources/icons/hh-logo.png"));
+    msgBox.setWindowTitle("hh-bot: Information");
+    msgBox.exec();
+}
+
 
 void MainWindow::on_pB_updateResume_clicked(){
     if(fieldsIsEmpty()){
-        QMessageBox msgBox;
-        msgBox.setText("Fill in all the fields!\t\t\n");
-        msgBox.setStandardButtons( QMessageBox::Cancel);
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setWindowIcon(QIcon(":/resources/icons/hh-logo.png"));
-        msgBox.setWindowTitle("hh-bot: Information");
-        msgBox.exec();
+        showMessageBox("Fill in all the fields!\t\t\n");
     }else{
         sendRequest();
     }
@@ -181,15 +185,19 @@ void MainWindow::on_pB_updateResume_clicked(){
 
 
 void MainWindow::on_pB_startAutoUpdate_clicked(){
-    ui->tE_logInfo->append(getCurrentDateTime() + "\nTimer started");
-    ui->tE_logInfo->append("");
+    if(fieldsIsEmpty()){
+        showMessageBox("Fill in all the fields!\t\t\n");
+    }else{
+        ui->tE_logInfo->append(getCurrentDateTime() + "\nTimer started");
+        ui->tE_logInfo->append("");
 
-    sendRequest();
+        sendRequest();
 
-    mTimer->start();
+        mTimer->start();
 
-    ui->pB_startAutoUpdate->setEnabled(false);
-    ui->pB_stopAutoUpdate->setEnabled(true);
+        ui->pB_startAutoUpdate->setEnabled(false);
+        ui->pB_stopAutoUpdate->setEnabled(true);
+    }
 }
 
 

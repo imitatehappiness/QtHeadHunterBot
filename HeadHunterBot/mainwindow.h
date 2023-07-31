@@ -36,6 +36,7 @@ private:
     void sendRequest();
     QString getCurrentDateTime();
     bool fieldsIsEmpty();
+    void showMessageBox(const QString& mesasge);
 private:
     Ui::MainWindow *ui;
 
