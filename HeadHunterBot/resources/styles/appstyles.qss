@@ -68,3 +68,8 @@ QTextBrowser{
     border-radius: 8px;
     border: 2px solid #eeeeee;
 }
+
+QToolTip{
+    background-color: #eeeeee;
+    padding: 3px;
+}

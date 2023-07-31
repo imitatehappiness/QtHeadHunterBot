@@ -36,6 +36,9 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLineEdit" name="lE_idResume">
+        <property name="toolTip">
+         <string/>
+        </property>
         <property name="placeholderText">
          <string>ID resume</string>
         </property>

@@ -53,6 +53,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(mTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
                 this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+
+    ui->lE_idResume->setToolTip("ID resume: The unique identifier of your resume on HeadHunter.");
+    ui->lE_hhtoken->setToolTip("hhtoken: HeadHunter API token required for authentication.");
+    ui->lE_hhuid->setToolTip("hhuid: HeadHunter user ID associated with your account.");
+    ui->lE_xsrf->setToolTip("xsrf: Cross-Site Request Forgery token for secure communication with the HeadHunter website.");
+
 }
 
 MainWindow::~MainWindow(){
