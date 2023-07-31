@@ -21,7 +21,7 @@ The application offers two main modes of updating:
 
 ## Where to find the necessary parameters
 
-+ hhtoken, hhuid, xsrf can be seen in the Web Console after clicking the "Update Date" button. Select our POST request and go to the Cookies tab. In the list you can find the necessary values.
++ hhtoken, hhuid, xsrf can be seen in the Web Console after clicking the "Update Date" button. Select our POST request and go to the Cookies tab (hh.ru/applicant/resumes/touch). In the list you can find the necessary values.
 + resume id can be found in the address bar on the resume page
 
 >The data must be entered once and then saved to a file: Setting->Save
