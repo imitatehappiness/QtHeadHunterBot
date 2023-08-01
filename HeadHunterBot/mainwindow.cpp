@@ -14,35 +14,59 @@
 #include <QMessageBox>
 #include <QTextCursor>
 #include <QMediaPlayer>
+#include <QNetworkCookieJar>
+#include <QRegularExpression>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , mSettingMenu(new QMenu(tr("&Setting"),this))
-    , mLoadSetting(new QAction(tr("&Load"),this))
-    , mSaveSetting(new QAction(tr("&Save"),this))
-    , mTimer(new QTimer)
+    , mTimer(new QTimer(this))
     , mTrayMenu(new QMenu(this))
     , mTrayIcon(new QSystemTrayIcon(this))
     , mViewWindow(new QAction("View window", this))
     , mQuitAction(new QAction("Exit", this))
-    , mManager(new QNetworkAccessManager)
     , mNotification(new PopUp(this))
+    , mManager(new QNetworkAccessManager)
 {
     ui->setupUi(this);
 
-    mSettingMenu->addAction(mLoadSetting);
-    mSettingMenu->addAction(mSaveSetting);
+    /// Setting Menu
+    QAction* loadSetting = new QAction(tr("&Load"),this);
+    QAction* saveSetting = new QAction(tr("&Save"),this);
+    QAction* clearSetting = new QAction(tr("&Clear"),this);
+
+    mSettingMenu->addAction(loadSetting);
+    mSettingMenu->addAction(saveSetting);
+    mSettingMenu->addAction(clearSetting);
 
     menuBar()->addMenu(mSettingMenu);
 
-    connect(mLoadSetting, SIGNAL(triggered()), this, SLOT(loadSetting()));
-    connect(mSaveSetting, SIGNAL(triggered()), this, SLOT(saveSetting()));
+    connect(loadSetting, SIGNAL(triggered()), this, SLOT(loadSetting()));
+    connect(saveSetting, SIGNAL(triggered()), this, SLOT(loadSetting()));
+    QObject::connect(clearSetting, &QAction::triggered, this, [this](){
+        ui->lE_hhtoken->clear();
+        ui->lE_hhuid->clear();
+        ui->lE_idResume->clear();
+        ui->lE_xsrf->clear();
+    });
+
+    /// Log Menu
+    mLogMenu = new QMenu(tr("&Log"),this);
+
+    QAction* clearLog = new QAction(tr("&Clear"),this);
+
+    mLogMenu->addAction(clearLog);
+
+    menuBar()->addMenu(mLogMenu);
+
+    QObject::connect(clearLog, &QAction::triggered, this, [this](){
+        ui->tE_logInfo->clear();
+    });
 
     /// 14400000 milliseconds equals 4 hours
     mTimer->setInterval(14400000);
 
-    connect(mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
     connect(mTimer, SIGNAL(timeout()), this, SLOT(requestOnTimer()));
 
     connect(mViewWindow, SIGNAL(triggered()), this, SLOT(show()));
@@ -56,13 +80,14 @@ MainWindow::MainWindow(QWidget *parent)
     mTrayIcon->show();
 
     connect(mTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+            this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
+
+    connect(mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
 
     ui->lE_idResume->setToolTip("ID resume: The unique identifier of your resume on HeadHunter.");
     ui->lE_hhtoken->setToolTip("hhtoken: HeadHunter API token required for authentication.");
     ui->lE_hhuid->setToolTip("hhuid: HeadHunter user ID associated with your account.");
     ui->lE_xsrf->setToolTip("xsrf: Cross-Site Request Forgery token for secure communication with the HeadHunter website.");
-
 }
 
 MainWindow::~MainWindow(){
@@ -97,6 +122,9 @@ void MainWindow::loadSetting(){
         ui->lE_hhtoken->setText(Settings::instance().getHhtoken());
         ui->lE_hhuid->setText(Settings::instance().getHhuid());
         ui->lE_xsrf->setText(Settings::instance().getXsrf());
+
+        ui->pB_startAutoUpdate->setEnabled(true);
+        ui->pB_stopAutoUpdate->setEnabled(false);
     }
 }
 
@@ -110,34 +138,35 @@ void MainWindow::saveSetting(){
 }
 
 void MainWindow::requestOnTimer(){
-    sendRequest();
+    sendRequest("https://hh.ru/applicant/resumes/touch");
 }
 
 void MainWindow::responseFromServer(QNetworkReply *reply){
+
     QString httpStatusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute ).toString();
     QString httpReasonPhrase = reply->attribute( QNetworkRequest::HttpReasonPhraseAttribute ).toString();
 
     QString color;
 
-    if(httpStatusCode == 200){
+    if(httpStatusCode >= "200" && httpStatusCode <= "299"){
         color = "green";
+        mNotification->setPopupText("Resume is updated!");
+    }else if(httpStatusCode >= "300" && httpStatusCode <= "399"){
+        color = "orange";
         mNotification->setPopupText("Resume is updated!");
     }else{
         mNotification->setPopupText("Resume not updated!\nCode: " + httpStatusCode);
         color = "red";
     }
 
-    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">[" + getCurrentDateTime() + "]</strong>");
-    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">Answer from server: </strong>");
-    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
-    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span><br><br>");
+    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">>  ============================================= <br><br>[" + getCurrentDateTime() + "]: </strong> Update resume<br>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">Answer from server: </strong>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span><br><br>");
 
-    setDefaultStyleTextBrowser();
-
-    if(httpStatusCode != 200){
-        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">Possible reasons: <br>");
-        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> 1. Parameters are set incorrectly<br>");
-        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">> </strong> 2. The resume was updated less than 4 hours ago<br><br>");
+    if(httpStatusCode == "200"){
+        QDateTime nextUpdate = QDateTime::currentDateTime().addMSecs(14400000);
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">>The next update will be available:</strong> " + nextUpdate.toString(Qt::DefaultLocaleShortDate) + "<br><br>");
     }
 
     playSound("resources/sounds/notify.mp3");
@@ -145,15 +174,43 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
     MoveCursorToEnd();
 }
 
+void MainWindow::RequestNextUpdateFinished()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    QString message;
+
+    if (reply->error() == QNetworkReply::NoError) {
+        QString htmlContent = reply->readAll();
+
+        QRegularExpression re("<div\\s+class=\"resume-sidebar-text\"\\s+data-qa=\"resume-update-message\">(.*?)</div>");
+        QRegularExpressionMatch match = re.match(htmlContent);
+        if (match.hasMatch()) {
+            message = match.captured(1);
+            message = message.left(message.indexOf("«")).trimmed();
+
+        }else{
+            message = "The update is available";
+        }
+    }else {
+        message = "Error when receiving HTML content";
+    }
+
+    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">>  ============================================= <br><br>[" + getCurrentDateTime() + "]: </strong>Checking for updates<br><br>");
+    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">>Information: </strong>" + message + " <br><br>");
+
+    reply->deleteLater();
+
+    playSound("resources/sounds/notify.mp3");
+    mNotification->setPopupText("Information: " + message);
+    mNotification->show();
+    MoveCursorToEnd();
+}
+
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason){
     switch (reason){
     case QSystemTrayIcon::Trigger:
-        if(false == this->isVisible()){
-            this->show();
-        }
-        else{
-            this->hide();
-        }
+        !this->isVisible() ? this->show() : this->hide();
         break;
     default:
         break;
@@ -167,29 +224,15 @@ void MainWindow::setSettings(){
     Settings::instance().setXsrf(ui->lE_xsrf->text());
 }
 
-void MainWindow::sendRequest(){
+void MainWindow::sendRequest(const QString& url){
     setSettings();
-
-    QNetworkRequest request(QUrl("https://hh.ru/applicant/resumes/touch"));
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
-
-    request.setRawHeader("X-Xsrftoken", Settings::instance().getXsrf().toUtf8());
-
-    request.setRawHeader("Cookie", "hhtoken=" + Settings::instance().getHhtoken().toUtf8() + "; " +
-                         "hhuid=" + Settings::instance().getHhuid().toUtf8() + "; " +
-                         "_xsrf=" + Settings::instance().getXsrf().toUtf8() + "; "
-                         );
-
-    QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() +
-            "&undirectable=" + "true";
-
+    QNetworkRequest request = getRequest(url);
+    QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() + "&undirectable=" + "true";
     mManager->post(request, postData);
 }
 
 QString MainWindow::getCurrentDateTime(){
-    QDateTime currentDateTime = QDateTime::currentDateTime();
-    return currentDateTime.toString(Qt::DefaultLocaleShortDate);
+    return QDateTime::currentDateTime().toString(Qt::DefaultLocaleShortDate);
 }
 
 bool MainWindow::fieldsIsEmpty(){
@@ -212,13 +255,6 @@ void MainWindow::MoveCursorToEnd(){
     ui->tE_logInfo->setTextCursor(cursor);
 }
 
-void MainWindow::setDefaultStyleTextBrowser(){
-    QTextCursor cursor = ui->tE_logInfo->textCursor();
-    QTextCharFormat defaultFormat;
-    cursor.setCharFormat(defaultFormat);
-    ui->tE_logInfo->setTextCursor(cursor);
-}
-
 void MainWindow::playSound(const QString &path){
     QMediaPlayer *player = new QMediaPlayer(this);
     player->setMedia(QUrl::fromLocalFile(path));
@@ -226,41 +262,45 @@ void MainWindow::playSound(const QString &path){
     player->play();
 }
 
+QNetworkRequest MainWindow::getRequest(const QString &url)
+{
+    QNetworkRequest request((QUrl(url)));
 
-void MainWindow::on_pB_updateResume_clicked(){
-    if(fieldsIsEmpty()){
-        showMessageBox("Fill in all the fields!\t\t\n");
-    }else{
-        sendRequest();
-    }
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
+    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+
+    request.setRawHeader("X-Xsrftoken", Settings::instance().getXsrf().toUtf8());
+
+    request.setRawHeader("Cookie", "hhtoken=" + Settings::instance().getHhtoken().toUtf8() + "; " +
+                         "hhuid=" + Settings::instance().getHhuid().toUtf8() + "; " +
+                         "_xsrf=" + Settings::instance().getXsrf().toUtf8() + "; "
+                         );
+
+    return request;
 }
 
+void MainWindow::on_pB_updateResume_clicked(){
+    fieldsIsEmpty() ? showMessageBox("Fill in all the fields!\t\t\n") : sendRequest("https://hh.ru/applicant/resumes/touch");
+}
 
 void MainWindow::on_pB_startAutoUpdate_clicked(){
     if(fieldsIsEmpty()){
         showMessageBox("Fill in all the fields!\t\t\n");
     }else{
-        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">[" + getCurrentDateTime() + "]</strong>");
-        ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> Auto Update started </strong> <br><br>");
+        ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">>  ============================================= <br><br>[" + getCurrentDateTime() + "]: </strong>Auto Update started<br><br>");
 
-        setDefaultStyleTextBrowser();
-
-        sendRequest();
+        sendRequest("https://hh.ru/applicant/resumes/touch");
 
         mTimer->start();
 
         ui->pB_startAutoUpdate->setEnabled(false);
         ui->pB_stopAutoUpdate->setEnabled(true);
     }
-    clearFocus();
 }
 
 
 void MainWindow::on_pB_stopAutoUpdate_clicked(){
-    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">[" + getCurrentDateTime() + "]</strong>");
-    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: #0d6efd;\">> Auto Update stoped </strong> <br><br>");
-
-    setDefaultStyleTextBrowser();
+    ui->tE_logInfo->insertHtml("<strong style=\"font-size: 12px; color: #0d6efd;\">>  ============================================= <br><br>[" + getCurrentDateTime() + "]: </strong>Auto Update stoped<br><br>");
 
     mTimer->stop();
 
@@ -268,6 +308,19 @@ void MainWindow::on_pB_stopAutoUpdate_clicked(){
     ui->pB_stopAutoUpdate->setEnabled(false);
 
     MoveCursorToEnd();
-    clearFocus();
+}
+
+
+void MainWindow::on_pB_checkUpdate_clicked(){
+    if(fieldsIsEmpty()){
+        showMessageBox("Fill in all the fields!\t\t\n");
+    }else{
+        setSettings();
+
+        QNetworkRequest request = getRequest("https://tver.hh.ru/resume/" + Settings::instance().getIDResume().toUtf8());
+        QNetworkAccessManager* managerNextUpdate = new QNetworkAccessManager;
+        QNetworkReply *reply = managerNextUpdate->get(request);
+        connect(reply, SIGNAL(finished()), this, SLOT(RequestNextUpdateFinished()));
+    }
 }
 

@@ -58,6 +58,12 @@ private slots:
     */
     void responseFromServer(QNetworkReply *reply);
     /**
+    * @brief Handles the response from the server after sending a request.
+    *
+    * @param reply The network reply received from the server.
+    */
+    void RequestNextUpdateFinished();
+    /**
     * @brief Handles the activation of the system tray icon.
     *
     * @param reason The activation reason for the system tray icon.
@@ -75,6 +81,11 @@ private slots:
     * @brief Handles the click event on the "stop auto-update" button.
     */
     void on_pB_stopAutoUpdate_clicked();
+    /**
+    * @brief Handles the click event on the "check update" button.
+    */
+    void on_pB_checkUpdate_clicked();
+
 private:
     /**
     * @brief Sets the settings.
@@ -83,7 +94,7 @@ private:
     /**
     * @brief Sends a network request to the HH server.
     */
-    void sendRequest();
+    void sendRequest(const QString& url);
     /**
     * @brief Gets the current date and time as a formatted string.
     *
@@ -107,28 +118,23 @@ private:
     */
     void MoveCursorToEnd();
     /**
-    * @brief Set default style for text browser
-    */
-    void setDefaultStyleTextBrowser();
-    /**
-    * @brief play notify sound
+    * @brief Play notify sound
     */
     void playSound(const QString& path);
+    /**
+    * @brief Сreates and returns a QNetworkRequest object to execute a GET request to the specified URL.
+    */
+    QNetworkRequest getRequest(const QString& url);
 private:
     Ui::MainWindow *ui;
-
     QMenu *mSettingMenu;                /// The menu for managing settings
-    QAction *mLoadSetting;              /// Action for loading settings from a file
-    QAction *mSaveSetting;              /// Action for saving settings to a file
+    QMenu *mLogMenu;                    /// The menu for managing logs
     QTimer *mTimer;                     /// Timer for periodic tasks
-
     QMenu *mTrayMenu;                   /// The menu for the system tray icon
     QSystemTrayIcon *mTrayIcon;         /// The system tray icon
     QAction *mViewWindow;               /// Action to show the main window from the system tray
     QAction *mQuitAction;               /// Action to quit the application from the system tray
-
-    QNetworkAccessManager *mManager;    /// Network access manager for handling HTTP requests
-
     PopUp* mNotification;               /// Popup notification
+    QNetworkAccessManager* mManager;    /// Network access manager for handling HTTP requests
 
 };
