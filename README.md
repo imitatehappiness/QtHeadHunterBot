@@ -34,5 +34,6 @@ The application offers two main modes of updating:
 
 ## Example
 <p align="center">
-  <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/c4d64c8e-de63-4c28-8f8c-822395692198" />
+  <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/e5e8af35-b7ba-4804-b887-b642516aa0b0" />
 </p>
+
