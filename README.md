@@ -13,7 +13,7 @@ AutoHeadHunterUpdate is a C++ QT application with a graphical user interface des
 + **hhtoken:** HeadHunter API token required for authentication.
 + **hhuid:** HeadHunter user ID associated with your account.
 + **xsrf:** Cross-Site Request Forgery token for secure communication with the HeadHunter website.
-
++ **url:** Your regional url hh. For example "https://tver.hh.ru".
 The application offers two main modes of updating:
 
 + **One-Time Update:** Allows you to manually update your resume on the HeadHunter website instantly.
