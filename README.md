@@ -13,7 +13,7 @@ AutoHeadHunterUpdate is a C++ QT application with a graphical user interface des
 + **hhtoken:** HeadHunter API token required for authentication.
 + **hhuid:** HeadHunter user ID associated with your account.
 + **xsrf:** Cross-Site Request Forgery token for secure communication with the HeadHunter website.
-+ **url:** Your regional url hh. For example "https://tver.hh.ru".
++ **url:** Your regional url hh. For example "https://moscow.hh.ru".
   
 The application offers two main modes of updating:
 
@@ -41,5 +41,5 @@ Therefore, start auto mode when an update is available or immediately after.**
 
 ## Example
 <p align="center">
-  <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/4be8e9c7-2b03-459c-8c9f-a93b200509e9" />
+  <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/c0f9ffb1-a174-46bf-800f-0f98d8f138e2" />
 </p>
