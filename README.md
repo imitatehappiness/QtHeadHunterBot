@@ -20,6 +20,12 @@ The application offers two main modes of updating:
 + **One-Time Update:** Allows you to manually update your resume on the HeadHunter website instantly.
 + **Auto-Update:** Automatically updates your resume every 4 hours.
 
+## Importantly
+1. **If you start the automatic update, and it is not yet available, the timer will start for 4 hours.
+Therefore, start auto mode when an update is available or immediately after.**
+
+2. **With frequent access to the update, a captcha may appear on the site, in which case it is necessary to enter a captcha, and then run the auto-update.**
+
 ## Where to find the necessary parameters
 
 + hhtoken, hhuid, xsrf can be seen in the Web Console after clicking the "Update Date" button. Select our POST request (hh.ru/applicant/resumes/touch) and go to the Cookies tab . In the list you can find the necessary values.
