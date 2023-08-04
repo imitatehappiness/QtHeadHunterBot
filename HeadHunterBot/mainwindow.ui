@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>766</width>
-    <height>333</height>
+    <width>821</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -31,12 +31,49 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
+    <item row="3" column="1">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0" colspan="2">
+       <widget class="QPushButton" name="pB_startAutoUpdate">
+        <property name="text">
+         <string>Включить авто-обновление</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QPushButton" name="pB_stopAutoUpdate">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Выключить авто-обновление</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="4" column="1" colspan="2">
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="3" rowspan="5">
+     <widget class="QTextBrowser" name="tE_logInfo"/>
+    </item>
+    <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QLineEdit" name="lE_idResume">
         <property name="toolTip">
-         <string/>
+         <string>id resume: Уникальный идентификатор вашего резюме на HeadHunter.</string>
         </property>
         <property name="placeholderText">
          <string>ID resume</string>
@@ -45,6 +82,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QLineEdit" name="lE_hhtoken">
+        <property name="toolTip">
+         <string>hhtoken: Токен API HeadHunter, необходимый для аутентификации.</string>
+        </property>
         <property name="placeholderText">
          <string>hhtoken</string>
         </property>
@@ -52,6 +92,9 @@
       </item>
       <item row="2" column="0">
        <widget class="QLineEdit" name="lE_hhuid">
+        <property name="toolTip">
+         <string>hhuid: Идентификатор пользователя HeadHunter, связанный с вашей учетной записью.</string>
+        </property>
         <property name="placeholderText">
          <string>hhuid</string>
         </property>
@@ -59,14 +102,27 @@
       </item>
       <item row="3" column="0">
        <widget class="QLineEdit" name="lE_xsrf">
+        <property name="toolTip">
+         <string>xsrf: Межсайтовый запрос поддельного токена для безопасной связи с веб-сайтом HeadHunter.</string>
+        </property>
         <property name="placeholderText">
          <string>xsrf</string>
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QLineEdit" name="lE_url">
+        <property name="toolTip">
+         <string>url: Ваш региональный url HeadHunter. Например &quot;https://moscow.hh.ru &quot;.</string>
+        </property>
+        <property name="placeholderText">
+         <string>url</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
-    <item row="1" column="0">
+    <item row="1" column="1">
      <spacer name="verticalSpacer_2">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -82,60 +138,6 @@
       </property>
      </spacer>
     </item>
-    <item row="0" column="2" rowspan="5">
-     <widget class="QTextBrowser" name="tE_logInfo"/>
-    </item>
-    <item row="4" column="0" colspan="2">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="3" column="0">
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0" colspan="2">
-       <widget class="QPushButton" name="pB_checkUpdate">
-        <property name="text">
-         <string>Check update</string>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QPushButton" name="pB_updateResume">
-        <property name="text">
-         <string>Update resume</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QPushButton" name="pB_startAutoUpdate">
-        <property name="text">
-         <string>Start auto-update</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
-       <widget class="QPushButton" name="pB_stopAutoUpdate">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>Stop auto-update</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -143,12 +145,16 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>766</width>
+     <width>821</width>
      <height>21</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="resources/resources.qrc"/>

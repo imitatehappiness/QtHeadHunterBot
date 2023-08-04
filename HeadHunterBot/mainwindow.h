@@ -62,17 +62,13 @@ private slots:
     *
     * @param reply The network reply received from the server.
     */
-    void RequestNextUpdateFinished();
+    void RequestmNextUpdateFinished();
     /**
     * @brief Handles the activation of the system tray icon.
     *
     * @param reason The activation reason for the system tray icon.
     */
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
-    /**
-    * @brief Handles the click event on the "update resume" button.
-    */
-    void on_pB_updateResume_clicked();
     /**
     * @brief Handles the click event on the "start auto-update" button.
     */
@@ -81,11 +77,6 @@ private slots:
     * @brief Handles the click event on the "stop auto-update" button.
     */
     void on_pB_stopAutoUpdate_clicked();
-    /**
-    * @brief Handles the click event on the "check update" button.
-    */
-    void on_pB_checkUpdate_clicked();
-
 private:
     /**
     * @brief Sets the settings.
@@ -102,12 +93,6 @@ private:
     */
     QString getCurrentDateTime();
     /**
-    * @brief Checks if any input fields are empty.
-    *
-    * @return true if any input field is empty, false otherwise.
-    */
-    bool fieldsIsEmpty();
-    /**
     * @brief Displays a message box with the given message.
     *
     * @param message The message to be displayed in the message box.
@@ -123,18 +108,45 @@ private:
     void playSound(const QString& path);
     /**
     * @brief Сreates and returns a QNetworkRequest object to execute a GET request to the specified URL.
+    *
+    * @param url The url
     */
     QNetworkRequest getRequest(const QString& url);
+    /**
+    * @brief Checks if any input fields are correctly.
+    *
+    * @return true if any input field is correctly, false otherwise.
+    */
+    bool checkCorrectlyFields();
+    /**
+    * @brief Checks if there is a match between a regular expression and a given text.
+    *
+    * @param re The regular expression pattern to be matched against the `text`.
+    * @param text The input text in which the regular expression will be searched for matches.
+    *
+    * @return true if there is at least one match between the regular expression and the `text`, false otherwise.
+    */
+    bool hasMatch(const QString& re, const QString& text);
+    /**
+    * @brief initialization Setting Menu
+    */
+    void initSettingMenu();
+    /**
+    * @brief initialization Tray Menu
+    */
+    void initTrayMenu();
+    /**
+    * @brief initialization Log Menu
+    */
+    void initLogMenu();
+
+    void parseStrNextUpdate(QString& nextUpdate);
 private:
     Ui::MainWindow *ui;
     QMenu *mSettingMenu;                /// The menu for managing settings
     QMenu *mLogMenu;                    /// The menu for managing logs
-    QTimer *mTimer;                     /// Timer for periodic tasks
     QMenu *mTrayMenu;                   /// The menu for the system tray icon
-    QSystemTrayIcon *mTrayIcon;         /// The system tray icon
-    QAction *mViewWindow;               /// Action to show the main window from the system tray
-    QAction *mQuitAction;               /// Action to quit the application from the system tray
+    QTimer *mTimer;                     /// Timer for periodic tasks
     PopUp* mNotification;               /// Popup notification
     QNetworkAccessManager* mManager;    /// Network access manager for handling HTTP requests
-
 };

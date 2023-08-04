@@ -52,6 +52,9 @@ public:
     QString getXsrf() const;
     void setXsrf(const QString &xsrf);
 
+    QString getUrl() const;
+    void setUrl(const QString &url);
+
 private:
     /**
      * @brief Private constructor to enforce singleton pattern.
@@ -84,5 +87,7 @@ private:
     QString mHhtoken;    /// Stores the HeadHunter token.
     QString mHhuid;      /// Stores the HeadHunter user ID.
     QString mXsrf;       /// Stores the Cross-Site Request Forgery token.
+    QString mUrl;        /// Stores the url hh.
+
 };
 

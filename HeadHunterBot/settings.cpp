@@ -11,6 +11,7 @@ Settings::Settings(QObject *parent)
     , mHhtoken("")
     , mHhuid("")
     , mXsrf("")
+    , mUrl("")
 {
 
 }
@@ -50,6 +51,7 @@ QString Settings::parseDataToJSON(){
     data["Hhtoken"] = this->mHhtoken;
     data["Hhuid"] = this->mHhuid;
     data["Xsrf"] = this->mXsrf;
+    data["Url"] = this->mUrl;
 
     QJsonDocument doc(data);
 
@@ -66,6 +68,12 @@ void Settings::parseDataFromJSON(const QString &data){
     mHhtoken = jsonObj["Hhtoken"].toString();
     mHhuid = jsonObj["Hhuid"].toString();
     mXsrf = jsonObj["Xsrf"].toString();
+    mUrl = jsonObj["Url"].toString();
+
+}
+
+QString Settings::getUrl() const{
+    return mUrl;
 }
 
 QString Settings::getIDResume() const{
@@ -100,6 +108,9 @@ void Settings::setXsrf(const QString &xsrf){
     mXsrf = xsrf;
 }
 
+void Settings::setUrl(const QString &url){
+    mUrl = url;
+}
 
 
 
