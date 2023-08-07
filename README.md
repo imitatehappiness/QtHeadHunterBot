@@ -37,8 +37,14 @@ AutoHeadHunterUpdate - это приложение на C++ QT с графиче
 > ⚠️ **Предупреждение:**<br>
 > При частых запросах на обновление на сайте может появиться капча. В этом случае необходимо ввести капчу, а затем запустить автообновление.
 
-
 ## Пример
+<details>
+<summary>Click</summary>
 <p align="center">
     <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/b8544300-65e4-4d42-8c26-e402d6315de5" />
+      <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/36db41ac-f6d6-4725-b576-0f73da02d9ec" />
 </p>
+</details>
+
+
+
