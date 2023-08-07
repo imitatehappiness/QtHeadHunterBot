@@ -85,7 +85,7 @@ private:
     /**
     * @brief Sends a network request to the HH server.
     */
-    void sendRequest(const QString& url);
+    void sendRequest();
     /**
     * @brief Gets the current date and time as a formatted string.
     *
@@ -148,5 +148,4 @@ private:
     QMenu *mTrayMenu;                   /// The menu for the system tray icon
     QTimer *mTimer;                     /// Timer for periodic tasks
     PopUp* mNotification;               /// Popup notification
-    QNetworkAccessManager* mManager;    /// Network access manager for handling HTTP requests
 };

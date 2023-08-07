@@ -17,7 +17,7 @@
 #include <QNetworkCookieJar>
 #include <QRegularExpression>
 
-const uint FOUR_HOUR = 14400;
+const uint FOUR_HOUR = 14460;
 const QString TOUCH_URL = "https://hh.ru/applicant/resumes/touch";
 const QString LOGO_PATH = ":/resources/icons/hh-logo.png";
 const QString TITLE = "hh-bot";
@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent)
     , mTrayMenu(new QMenu(this))
     , mTimer(new QTimer(this))
     , mNotification(new PopUp(this))
-    , mManager(new QNetworkAccessManager)
 {
     ui->setupUi(this);
 
@@ -43,8 +42,6 @@ MainWindow::MainWindow(QWidget *parent)
     initTrayMenu();
 
     connect(mTimer, SIGNAL(timeout()), this, SLOT(requestOnTimer()));
-
-    connect(mManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
 }
 
 MainWindow::~MainWindow(){
@@ -92,7 +89,7 @@ void MainWindow::saveSetting(){
 }
 
 void MainWindow::requestOnTimer(){
-    sendRequest(TOUCH_URL);
+    sendRequest();
 }
 
 void MainWindow::responseFromServer(QNetworkReply *reply){
@@ -118,7 +115,7 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
     ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span><br><br>");
 
     if(httpStatusCode >= "200" && httpStatusCode <= "299"){
-        QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(14400000);
+        QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR * 1000);
         ui->tE_logInfo->insertHtml(STRONG_STYLE + "Следующее обновление:</strong> " + mNextUpdate.toString(Qt::DefaultLocaleShortDate) + ".<br><br>");
         mTimer->start();
 
@@ -127,6 +124,7 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
         ui->tE_logInfo->insertHtml(STRONG_STYLE + "Информация:</strong> Введите капчу на сайте.<br><br>");
     }
 
+    reply->deleteLater();
     MoveCursorToEnd();
 }
 
@@ -168,9 +166,11 @@ void MainWindow::RequestmNextUpdateFinished(){
     }
 
     if(reply->error() == QNetworkReply::NoError && update){
+        QNetworkAccessManager* manager = new QNetworkAccessManager(this);
         QNetworkRequest request = getRequest(TOUCH_URL);
-        QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() + "&undirectable=" + "true";
-        mManager->post(request, postData);
+        QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() + "&undirectable=" + "true";\
+        connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
+        manager->post(request, postData);
     }
 
     reply->deleteLater();
@@ -199,7 +199,7 @@ void MainWindow::setSettings(){
     Settings::instance().setUrl(ui->lE_url->text());
 }
 
-void MainWindow::sendRequest(const QString& url){
+void MainWindow::sendRequest(){
     setSettings();
     {
         QString url = Settings::instance().getUrl().toUtf8();
@@ -207,7 +207,7 @@ void MainWindow::sendRequest(const QString& url){
             url += "/";
         }
         QNetworkRequest request = getRequest(url + "resume/" + Settings::instance().getIDResume().toUtf8());
-        QNetworkAccessManager* managermNextUpdate = new QNetworkAccessManager;
+        QNetworkAccessManager* managermNextUpdate = new QNetworkAccessManager(this);
         QNetworkReply *reply = managermNextUpdate->get(request);
         connect(reply, SIGNAL(finished()), this, SLOT(RequestmNextUpdateFinished()));
     }
@@ -244,7 +244,8 @@ QNetworkRequest MainWindow::getRequest(const QString &url){
     QNetworkRequest request((QUrl(url)));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
+    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
 
     request.setRawHeader("X-Xsrftoken", Settings::instance().getXsrf().toUtf8());
 
@@ -351,7 +352,7 @@ void MainWindow::on_pB_startAutoUpdate_clicked(){
         ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Авто-обновление включено.<br><br>");
         mTimer->setInterval(FOUR_HOUR * 1000);
 
-        sendRequest(TOUCH_URL);
+        sendRequest();
 
         ui->pB_startAutoUpdate->setEnabled(false);
         ui->pB_stopAutoUpdate->setEnabled(true);
