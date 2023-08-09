@@ -21,7 +21,7 @@ const uint FOUR_HOUR = 14460;
 const QString TOUCH_URL = "https://hh.ru/applicant/resumes/touch";
 const QString LOGO_PATH = ":/resources/icons/hh-logo.png";
 const QString TITLE = "hh-bot";
-const QString STRONG_STYLE = "<strong style=\"font-size: 12px; color: #0d6efd;\">>";
+const QString STRONG_STYLE = "<strong style=\"font-size: 12px; color: #0d6efd;\">";
 const QString LINE = "=============================================";
 
 MainWindow::MainWindow(QWidget *parent)
@@ -111,8 +111,8 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
 
     ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong> Обновление резюме.<br>");
     ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">Ответ от сервера: </strong>");
-    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
-    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\">> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span><br><br>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\"> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
+    ui->tE_logInfo->insertHtml("<br><strong style=\"font-size: 12px; color: " + color + ";\"> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span><br><br>");
 
     if(httpStatusCode >= "200" && httpStatusCode <= "299"){
         QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR * 1000);
@@ -130,9 +130,10 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
 
 void MainWindow::RequestmNextUpdateFinished(){
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    QString message = "Ошибка при получении HTML-содержимого.";
 
-    bool update = false;
+    enum status{error, update_available, update_not_available};
+    status update = status::error;
+    QString message = "Ошибка при получении HTML-содержимого.";
 
     if (reply->error() == QNetworkReply::NoError) {
         QString htmlContent = reply->readAll();
@@ -141,7 +142,7 @@ void MainWindow::RequestmNextUpdateFinished(){
         QRegularExpressionMatch match = disabled.match(htmlContent);
         if (match.hasMatch()) {
             if(!match.captured(1).contains("disabled")){
-                update = true;
+                update = status::update_available;
                 message = "Обновление доступно.";
                 mTimer->setInterval(FOUR_HOUR * 1000);
             }else{
@@ -150,6 +151,7 @@ void MainWindow::RequestmNextUpdateFinished(){
                 if(match.hasMatch()){
                     message = match.captured(1);
                     message = message.left(message.indexOf("«")).trimmed();
+                    update = status::update_not_available;
                     mTimer->setInterval(FOUR_HOUR / 8 * 1000);
                     mTimer->start();
                 }
@@ -160,12 +162,12 @@ void MainWindow::RequestmNextUpdateFinished(){
     ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Проверка обновления.<br><br>");
     ui->tE_logInfo->insertHtml(STRONG_STYLE + "Информация: </strong>" + message + " <br><br>");
 
-    if(!update){
+    if(update == status::update_not_available){
         QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR / 8 * 1000);
         ui->tE_logInfo->insertHtml(STRONG_STYLE + "Следующая проверка обновления:</strong> " + mNextUpdate.toString(Qt::DefaultLocaleShortDate) + ".<br><br>");
     }
 
-    if(reply->error() == QNetworkReply::NoError && update){
+    if(reply->error() == QNetworkReply::NoError && update == status::update_available){
         QNetworkAccessManager* manager = new QNetworkAccessManager(this);
         QNetworkRequest request = getRequest(TOUCH_URL);
         QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() + "&undirectable=" + "true";\
@@ -173,11 +175,19 @@ void MainWindow::RequestmNextUpdateFinished(){
         manager->post(request, postData);
     }
 
+    if(update == status::error){
+        showMessageBox(message + "\nПроверьте корректность введённых параметров.\t\n");
+        ui->pB_startAutoUpdate->setEnabled(true);
+        ui->pB_stopAutoUpdate->setEnabled(false);
+    }else{
+        mNotification->setPopupText("Информация:" + message);
+        mNotification->show();
+    }
+
     reply->deleteLater();
 
     playSound("resources/sounds/notify.mp3");
-    mNotification->setPopupText("Информация:" + message);
-    mNotification->show();
+
     MoveCursorToEnd();
 }
 
@@ -220,7 +230,7 @@ QString MainWindow::getCurrentDateTime(){
 void MainWindow::showMessageBox(const QString &mesasge){
     QMessageBox msgBox;
     msgBox.setText(mesasge);
-    msgBox.setStandardButtons( QMessageBox::Cancel);
+    msgBox.setStandardButtons( QMessageBox::Ok);
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setWindowIcon(QIcon(LOGO_PATH));
     msgBox.setWindowTitle(TITLE);
@@ -347,7 +357,7 @@ void MainWindow::initLogMenu(){
 
 void MainWindow::on_pB_startAutoUpdate_clicked(){
     if(!checkCorrectlyFields()){
-        showMessageBox("Заполните поля правильными значениями!\t\t\n");
+        showMessageBox("Заполните поля корректными значениями!\t\n");
     }else{
         ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Авто-обновление включено.<br><br>");
         mTimer->setInterval(FOUR_HOUR * 1000);
