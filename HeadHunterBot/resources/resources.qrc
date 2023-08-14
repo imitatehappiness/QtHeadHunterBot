@@ -3,5 +3,6 @@
         <file>icons/hh-logo.png</file>
         <file>styles/appstyles.qss</file>
         <file>sounds/notify.mp3</file>
+        <file>icons/hh-logo.ico</file>
     </qresource>
 </RCC>
