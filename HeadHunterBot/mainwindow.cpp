@@ -306,7 +306,7 @@ void MainWindow::initSettingMenu(){
     menuBar()->addMenu(mSettingMenu);
 
     connect(loadSetting, SIGNAL(triggered()), this, SLOT(loadSetting()));
-    connect(saveSetting, SIGNAL(triggered()), this, SLOT(loadSetting()));
+    connect(saveSetting, SIGNAL(triggered()), this, SLOT(saveSetting()));
     QObject::connect(clearSetting, &QAction::triggered, this, [this](){
         ui->lE_hhtoken->clear();
         ui->lE_hhuid->clear();
