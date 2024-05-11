@@ -34,7 +34,7 @@
 + **hhtoken, hhuid, xsrf** можно увидеть в веб-консоли после нажатия кнопки "Обновить дату". Выберите запрос на публикацию (*hh.ru/applicant/resumes/touch*) и перейдите на вкладку Cookies. В списке можно найти необходимые значения.
 
   <details>
-  <summary>Example</summary>
+  <summary>Пример</summary>
   <p align="center">
       <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/a459611d-b8c9-48d0-abe5-c62b81816254" />
   </p>
@@ -57,7 +57,7 @@
 
 ## Пример
 <details>
-<summary>Click</summary>
+<summary>Пример</summary>
 <p align="center">
     <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/b8544300-65e4-4d42-8c26-e402d6315de5" />
       <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/36db41ac-f6d6-4725-b576-0f73da02d9ec" />
