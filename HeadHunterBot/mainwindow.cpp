@@ -75,8 +75,8 @@ void MainWindow::loadSetting(){
         ui->lE_xsrf->setText(Settings::instance().getXsrf());
         ui->lE_url->setText(Settings::instance().getUrl());
 
-        ui->pB_startAutoUpdate->setEnabled(true);
-        ui->pB_stopAutoUpdate->setEnabled(false);
+        ui->pB_turn->setProperty("turn", false);
+        ui->pB_turn->setText("Запустить");
     }
 }
 
@@ -177,17 +177,14 @@ void MainWindow::RequestmNextUpdateFinished(){
 
     if(update == status::error){
         showMessageBox(message + "\nПроверьте корректность введённых параметров.\t\n");
-        ui->pB_startAutoUpdate->setEnabled(true);
-        ui->pB_stopAutoUpdate->setEnabled(false);
+        ui->pB_turn->setProperty("turn", false);
+        ui->pB_turn->setText("Запустить");
     }else{
         mNotification->setPopupText("Информация:" + message);
         mNotification->show();
     }
 
     reply->deleteLater();
-
-    playSound("resources/sounds/notify.mp3");
-
     MoveCursorToEnd();
 }
 
@@ -354,29 +351,30 @@ void MainWindow::initLogMenu(){
     });
 }
 
+void MainWindow::on_pB_turn_clicked(){
+    if (ui->pB_turn->property("turn") == true){
 
-void MainWindow::on_pB_startAutoUpdate_clicked(){
-    if(!checkCorrectlyFields()){
-        showMessageBox("Заполните поля корректными значениями!\t\n");
+        ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Авто-обновление выключено.<br><br>");
+
+        mTimer->stop();
+
+        ui->pB_turn->setProperty("turn", false);
+        ui->pB_turn->setText("Запустить");
+
+        MoveCursorToEnd();
+
     }else{
-        ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Авто-обновление включено.<br><br>");
-        mTimer->setInterval(FOUR_HOUR * 1000);
 
-        sendRequest();
+        if(!checkCorrectlyFields()){
+            showMessageBox("Заполните поля корректными значениями!\t\n");
+        }else{
+            ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Авто-обновление включено.<br><br>");
+            mTimer->setInterval(FOUR_HOUR * 1000);
 
-        ui->pB_startAutoUpdate->setEnabled(false);
-        ui->pB_stopAutoUpdate->setEnabled(true);
+            sendRequest();
+
+            ui->pB_turn->setText("Остановить");
+            ui->pB_turn->setProperty("turn", true);
+        }
     }
 }
-
-void MainWindow::on_pB_stopAutoUpdate_clicked(){
-    ui->tE_logInfo->insertHtml(STRONG_STYLE + LINE + "<br><br>[" + getCurrentDateTime() + "]: </strong>Авто-обновление выключено.<br><br>");
-
-    mTimer->stop();
-
-    ui->pB_startAutoUpdate->setEnabled(true);
-    ui->pB_stopAutoUpdate->setEnabled(false);
-
-    MoveCursorToEnd();
-}
-

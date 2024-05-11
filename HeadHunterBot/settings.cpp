@@ -37,7 +37,7 @@ void Settings::saveSettings(const QString &path){
     QString result = parseDataToJSON();
 
     QFile file;
-    file.setFileName(path + ".json");
+    file.setFileName(path);
     if (file.open(QFile::ReadWrite)){
         QTextStream out(&file);
         out << result;
@@ -69,7 +69,6 @@ void Settings::parseDataFromJSON(const QString &data){
     mHhuid = jsonObj["Hhuid"].toString();
     mXsrf = jsonObj["Xsrf"].toString();
     mUrl = jsonObj["Url"].toString();
-
 }
 
 QString Settings::getUrl() const{

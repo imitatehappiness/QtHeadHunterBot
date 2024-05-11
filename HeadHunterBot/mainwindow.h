@@ -70,13 +70,11 @@ private slots:
     */
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     /**
+    * @brief Handles the click event on the "stop auto-update" button.
     * @brief Handles the click event on the "start auto-update" button.
     */
-    void on_pB_startAutoUpdate_clicked();
-    /**
-    * @brief Handles the click event on the "stop auto-update" button.
-    */
-    void on_pB_stopAutoUpdate_clicked();
+    void on_pB_turn_clicked();
+
 private:
     /**
     * @brief Sets the settings.
