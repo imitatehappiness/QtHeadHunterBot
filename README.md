@@ -32,6 +32,14 @@
 ### Где найти необходимые параметры
 
 + **hhtoken, hhuid, xsrf** можно увидеть в веб-консоли после нажатия кнопки "Обновить дату". Выберите запрос на публикацию (*hh.ru/applicant/resumes/touch*) и перейдите на вкладку Cookies. В списке можно найти необходимые значения.
+
+  <details>
+  <summary>Example</summary>
+  <p align="center">
+      <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/a459611d-b8c9-48d0-abe5-c62b81816254" />
+  </p>
+  </details>
+
 + **resume id, url** можно найти в адресной строке на странице резюме.
 
 
