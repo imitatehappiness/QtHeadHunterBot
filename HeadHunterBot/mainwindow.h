@@ -137,8 +137,24 @@ private:
     * @brief initialization Log Menu
     */
     void initLogMenu();
-
+    /**
+    * @brief Parses the next update string to extract relevant information.
+    * @param nextUpdate The string containing information about the next update.
+    */
     void parseStrNextUpdate(QString& nextUpdate);
+
+    /**
+    * @brief Updates the text and state of the "turn" button.
+    * @param text The new text to be displayed on the button.
+    * @param value The new state of the button (true for enabled, false for disabled).
+    */
+    void updateTurnBtn(QString text, bool value);
+
+    /**
+    * @brief Displays a message to the user.
+    * @param message The message to be displayed.
+    */
+    void displayMessage(QString message);
 private:
     Ui::MainWindow *ui;
     QMenu *mSettingMenu;                /// The menu for managing settings
