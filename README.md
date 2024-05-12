@@ -12,9 +12,9 @@
 ![GitHub watchers](https://img.shields.io/github/watchers/imitatehappiness/QtHeadHunterBot?style=social)
 ![GitHub followers](https://img.shields.io/github/followers/imitatehappiness?style=social)
 
->**Compiler:**  MinGW 5.3.0 32bit
+>**Compiler:**  MinGW 5.8.0 64bit
 >
->**Profile Qt:**  5.11.0 MinGW 32bit
+>**Profile Qt:**  5.15.2 MinGW 64bit
 >
 >**System:**  Win11
 
