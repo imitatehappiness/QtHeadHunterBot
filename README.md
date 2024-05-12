@@ -60,11 +60,12 @@
 > При частых запросах к обновлению на сайте может появиться капча. В этом случае необходимо ввести капчу, а затем запустить автообновление.
 
 ## Сборка
-Запустите windeployqt в командной строке, указав в качестве аргумента местоположение вашего проекта:
+
+После сборки в Qt запустите windeployqt в командной строке, указав в качестве аргумента местоположение вашего проекта:
 ```
-windeployqt --compiler-runtime C:\project_folder\my_project.exe
+windeployqt --compiler-runtime C:\QtHeadHunterBot\HeadHunterBot.exe
 ```
-Теперь my_project.exe будет иметь все необходимые библиотеки dll и выполняться.
+Теперь HeadHunterBot.exe будет иметь все необходимые библиотеки dll и выполняться.
 
 ## Демонстрация
 <img src="https://github.com/imitatehappiness/QtHeadHunterBot/assets/79199956/b8544300-65e4-4d42-8c26-e402d6315de5" />
