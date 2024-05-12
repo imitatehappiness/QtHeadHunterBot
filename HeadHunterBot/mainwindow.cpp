@@ -109,13 +109,13 @@ void MainWindow::responseFromServer(QNetworkReply *reply){
     }
 
     displayMessage("Обновление резюме");
-    displayMessage("<br/><strong style=\"font-size: 12px; color: " + color + ";\">Ответ от сервера: </strong>");
-    displayMessage("<br/><strong style=\"font-size: 12px; color: " + color + ";\"> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
-    displayMessage("<br/><strong style=\"font-size: 12px; color: " + color + ";\"> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span>");
+    displayMessage("<strong style=\"font-size: 12px; color: " + color + ";\">Ответ от сервера: </strong>");
+    displayMessage("<strong style=\"font-size: 12px; color: " + color + ";\"> </strong> <span style=\"color: " + color + ";\">Code: " + httpStatusCode + "</span>");
+    displayMessage("<strong style=\"font-size: 12px; color: " + color + ";\"> </strong> <span style=\"color: " + color + ";\">Status: " + httpReasonPhrase + "</span>");
 
     if(httpStatusCode >= "200" && httpStatusCode <= "299"){
         QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR * 1000);
-        displayMessage("<br/>Следующее обновление:</strong> " + mNextUpdate.toString(Qt::DefaultLocaleShortDate));
+        displayMessage("Следующее обновление:</strong> " + mNextUpdate.toString(Qt::DefaultLocaleShortDate));
         mTimer->start();
 
     }
@@ -163,10 +163,7 @@ void MainWindow::RequestmNextUpdateFinished(){
     displayMessage("Проверка обновления");
     displayMessage(message);
 
-    if (message == "Ошибка при получении HTML-содержимого"){
-        updateTurnBtn("Запустить", false);
-        displayMessage("Авто-обновление выключено");
-    }
+
 
     if(update == status::update_not_available){
         QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR / 8 * 1000);
@@ -179,6 +176,11 @@ void MainWindow::RequestmNextUpdateFinished(){
         QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() + "&undirectable=" + "true";\
         connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
         manager->post(request, postData);
+    }
+
+    if (message == "Ошибка при получении HTML-содержимого"){
+        updateTurnBtn("Запустить", false);
+        displayMessage("Авто-обновление выключено");
     }
 
     if(update == status::error){
