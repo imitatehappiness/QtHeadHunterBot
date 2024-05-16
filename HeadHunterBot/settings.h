@@ -3,23 +3,22 @@
 #include <QObject>
 
 /**
- * @brief The Settings class provides a singleton object for managing application settings.
+ * @brief Класс Settings предоставляет единственный объект для управления настройками приложения.
  *
- * @details The Settings class is designed to manage various application settings as a singleton,
- * ensuring that there is only one instance throughout the application's lifecycle. It
- * allows you to store and retrieve settings data, such as the resume ID, HeadHunter token,
- * HeadHunter user ID, and Cross-Site Request Forgery (Xsrf) token.
+ * @details Класс Settings предназначен для управления различными настройками приложения как синглтоном,
+ * обеспечивая единственный экземпляр на протяжении жизненного цикла приложения. Он
+ * позволяет сохранять и извлекать данные настроек, такие как идентификатор резюме, токен HeadHunter,
+ * идентификатор пользователя HeadHunter и токен межсайтовой подделки запросов (Xsrf).
  *
- * The class follows the Singleton design pattern, which means that it provides a static
- * method to access the single instance, ensuring there is only one Settings object that
- * can be accessed globally in the application.
- *
+ * Класс следует шаблону проектирования Singleton, что означает, что он предоставляет статический
+ * метод доступа к единственному экземпляру, обеспечивая существование только одного объекта Settings,
+ * к которому можно получить доступ глобально в приложении.
  */
-class Settings : public QObject{
+class Settings : public QObject {
     Q_OBJECT
 public:
     /**
-     * @brief Returns a reference to the single instance of the Settings class.
+     * @brief Возвращает ссылку на единственный экземпляр класса Settings.
      */
     static Settings& instance(){
         static Settings setting;
@@ -27,16 +26,16 @@ public:
     }
 
     /**
-     * @brief Loads settings data from the specified file path.
+     * @brief Загружает данные настроек из указанного файла.
      *
-     * @param path The file path from which settings data will be loaded.
+     * @param path Путь к файлу, из которого будут загружены данные настроек.
      */
     void loadSettings(const QString& path);
 
     /**
-     * @briefSaves the current settings data to the specified file path.
+     * @brief Сохраняет текущие данные настроек в указанный файл.
      *
-     * @param path The file path to which settings data will be saved.
+     * @param path Путь к файлу, в который будут сохранены данные настроек.
      */
     void saveSettings(const QString& path);
 
@@ -57,37 +56,35 @@ public:
 
 private:
     /**
-     * @brief Private constructor to enforce singleton pattern.
+     * @brief Приватный конструктор для обеспечения шаблона синглтона.
      *
-     * @param parent The parent QObject. Default is nullptr.
+     * @param parent Родительский QObject. По умолчанию - nullptr.
      */
     explicit Settings(QObject *parent = nullptr);
 
     /**
-     * @brief Copy constructor and assignment operator are made private to prevent accidental copies of the singleton instance.
+     * @brief Конструктор копирования и оператор присваивания сделаны приватными для предотвращения случайных копий единственного экземпляра синглтона.
      */
     Settings(const Settings&);
     Settings & operator=(const Settings&);
 
     /**
-     * @brief Converts the current settings data to JSON format.
+     * @brief Преобразует текущие данные настроек в формат JSON.
      *
-     * @return The JSON representation of the settings data as a QString.
+     * @return JSON-представление данных настроек в виде QString.
      */
     QString parseDataToJSON();
     /**
-     * @brief Parses the provided JSON data and updates the settings accordingly.
+     * @brief Разбирает предоставленные данные JSON и обновляет настройки соответственно.
      *
-     * @param data The JSON data to parse as a QString.
+     * @param data Данные JSON для разбора в виде QString.
      */
     void parseDataFromJSON(const QString& data);
 
 private:
-    QString mIDResume;   /// Stores the ID of the resume.
-    QString mHhtoken;    /// Stores the HeadHunter token.
-    QString mHhuid;      /// Stores the HeadHunter user ID.
-    QString mXsrf;       /// Stores the Cross-Site Request Forgery token.
-    QString mUrl;        /// Stores the url hh.
-
+    QString mIDResume;   /// Хранит идентификатор резюме.
+    QString mHhtoken;    /// Хранит токен HeadHunter.
+    QString mHhuid;      /// Хранит идентификатор пользователя HeadHunter.
+    QString mXsrf;       /// Хранит токен межсайтовой подделки запросов (Xsrf).
+    QString mUrl;        /// Хранит URL hh.
 };
-

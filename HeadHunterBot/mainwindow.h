@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vacancymanager.h>
+
 #include <QMainWindow>
 #include <QMenu>
 #include <QAction>
@@ -13,153 +15,174 @@ QT_END_NAMESPACE
 
 class PopUp;
 
-class MainWindow : public QMainWindow{
+using namespace hh_manager;
+
+class MainWindow : public QMainWindow {
     Q_OBJECT
 public:
+
     /**
-    * @brief Constructor for the MainWindow class.
+    * @brief Конструктор для класса MainWindow.
     *
-    * @param parent The parent widget (default: nullptr).
+    * @param parent Родительский виджет (по умолчанию: nullptr).
     */
     MainWindow(QWidget *parent = nullptr);
     /**
-    * @brief Destructor for the MainWindow class.
+    * @brief Деструктор для класса MainWindow.
     */
     ~MainWindow();
 protected:
     /**
-    * @brief Event handler for the close event of the main window.
+    * @brief Обработчик события закрытия главного окна.
     *
-    * @param event The close event.
+    * @param event Событие закрытия.
     */
     void closeEvent(QCloseEvent * event);
 public slots:
     /**
-    * @brief Shows the main window.
+    * @brief Показать главное окно.
     */
     void show();
 private slots:
     /**
-    * @brief Loads settings from a JSON file.
+    * @brief Загрузка настроек из JSON файла.
     */
     void loadSetting();
     /**
-    * @brief Loads settings from a JSON file.
+    * @brief Сохранение настроек в JSON файл.
     */
     void saveSetting();
     /**
-    * @brief Loads settings from a file.
+    * @brief Запрос настроек по таймеру.
     */
     void requestOnTimer();
     /**
-    * @brief Handles the response from the server after sending a request.
+    * @brief Обработка ответа от сервера после отправки запроса.
     *
-    * @param reply The network reply received from the server.
+    * @param reply Ответ от сервера.
     */
     void responseFromServer(QNetworkReply *reply);
     /**
-    * @brief Handles the response from the server after sending a request.
-    *
-    * @param reply The network reply received from the server.
+    * @brief Обработка завершения запроса следующего обновления.
     */
     void RequestmNextUpdateFinished();
     /**
-    * @brief Handles the activation of the system tray icon.
+    * @brief Обработка активации значка в системном трее.
     *
-    * @param reason The activation reason for the system tray icon.
+    * @param reason Причина активации значка в трее.
     */
     void iconActivated(QSystemTrayIcon::ActivationReason reason);
     /**
-    * @brief Handles the click event on the "stop auto-update" button.
-    * @brief Handles the click event on the "start auto-update" button.
+    * @brief Обновить таблицу вакансий.
     */
-    void on_pB_turn_clicked();
+    void updateVacancyTable();
+    /**
+    * @brief Обновить комбобокс с регионами.
+    */
+    void updateRegionCb();
 
+    void on_pB_turn_clicked();
+    void on_pB_getVanacy_clicked();
+    void on_pB_load_resume_params_clicked();
+    void on_pB_save_resume_params_clicked();
+    void on_pB_clear_resume_params_clicked();
+    void on_pB_clear_resume_log_clicked();
+    void on_cB_sort_vacancies_currentIndexChanged(int index);
+    void on_cB_area_currentIndexChanged(int index);
+    void on_dE_period_userDateChanged(const QDate &date);
+    void on_pB_exportToXML_clicked();
 private:
     /**
-    * @brief Sets the settings.
+    * @brief Установка настроек.
     */
     void setSettings();
     /**
-    * @brief Sends a network request to the HH server.
+    * @brief Отправка сетевого запроса к серверу hh_manager.
     */
     void sendRequest();
     /**
-    * @brief Gets the current date and time as a formatted string.
+    * @brief Получение текущей даты и времени в виде форматированной строки.
     *
-    * @return A QString containing the current date and time.
+    * @return QString с текущей датой и временем.
     */
     QString getCurrentDateTime();
     /**
-    * @brief Displays a message box with the given message.
+    * @brief Отображение сообщения в message box.
     *
-    * @param message The message to be displayed in the message box.
+    * @param message Сообщение для отображения.
     */
-    void showMessageBox(const QString& mesasge);
+    void showMessageBox(const QString& message);
     /**
-    * @brief Move the cursor to the end text browser
+    * @brief Перемещение курсора в конец текстового браузера.
     */
     void MoveCursorToEnd();
     /**
-    * @brief Play notify sound
+    * @brief Проигрывание звукового уведомления.
+    *
+    * @param path Путь к звуковому файлу.
     */
     void playSound(const QString& path);
     /**
-    * @brief Сreates and returns a QNetworkRequest object to execute a GET request to the specified URL.
+    * @brief Создание и возвращение объекта QNetworkRequest для выполнения GET запроса по указанному URL.
     *
-    * @param url The url
+    * @param url URL для запроса.
     */
     QNetworkRequest getRequest(const QString& url);
     /**
-    * @brief Checks if any input fields are correctly.
+    * @brief Проверка корректности полей ввода.
     *
-    * @return true if any input field is correctly, false otherwise.
+    * @return true, если поля ввода корректны, иначе false.
     */
     bool checkCorrectlyFields();
     /**
-    * @brief Checks if there is a match between a regular expression and a given text.
+    * @brief Проверка совпадения текста с регулярным выражением.
     *
-    * @param re The regular expression pattern to be matched against the `text`.
-    * @param text The input text in which the regular expression will be searched for matches.
+    * @param re Шаблон регулярного выражения.
+    * @param text Текст для поиска совпадений.
     *
-    * @return true if there is at least one match between the regular expression and the `text`, false otherwise.
+    * @return true, если есть хотя бы одно совпадение, иначе false.
     */
     bool hasMatch(const QString& re, const QString& text);
     /**
-    * @brief initialization Setting Menu
+    * @brief Инициализация меню настроек резюме.
     */
-    void initSettingMenu();
+    void initResumeSettingMenu();
     /**
-    * @brief initialization Tray Menu
+    * @brief Инициализация меню системного трея.
     */
     void initTrayMenu();
     /**
-    * @brief initialization Log Menu
-    */
-    void initLogMenu();
-    /**
-    * @brief Parses the next update string to extract relevant information.
-    * @param nextUpdate The string containing information about the next update.
+    * @brief Парсинг строки следующего обновления для извлечения информации.
+    *
+    * @param nextUpdate Строка, содержащая информацию о следующем обновлении.
     */
     void parseStrNextUpdate(QString& nextUpdate);
-
     /**
-    * @brief Updates the text and state of the "turn" button.
-    * @param text The new text to be displayed on the button.
-    * @param value The new state of the button (true for enabled, false for disabled).
+    * @brief Обновление текста и состояния кнопки "turn".
+    *
+    * @param text Новый текст для отображения на кнопке.
+    * @param value Новое состояние кнопки (true для включения, false для отключения).
     */
     void updateTurnBtn(QString text, bool value);
-
     /**
-    * @brief Displays a message to the user.
-    * @param message The message to be displayed.
+    * @brief Отображение сообщения пользователю.
+    *
+    * @param message Сообщение для отображения.
     */
     void displayMessage(QString message);
+    /**
+    * @brief Экспорт таблицы в XML.
+    */
+    void exportTableToXml();
 private:
     Ui::MainWindow *ui;
-    QMenu *mSettingMenu;                /// The menu for managing settings
-    QMenu *mLogMenu;                    /// The menu for managing logs
-    QMenu *mTrayMenu;                   /// The menu for the system tray icon
-    QTimer *mTimer;                     /// Timer for periodic tasks
-    PopUp* mNotification;               /// Popup notification
+    QMenu *mResumeSettingMenu;                      /// Меню для управления настройками резюме
+    QMenu *mParsingSettingMenu;                     /// Меню для управления настройками парсинга
+    QMenu *mTrayMenu;                               /// Меню для значка системного трея
+    QTimer *mTimer;                                 /// Таймер для периодических задач
+    PopUp* mNotification;                           /// Всплывающее уведомление
+    hh_manager::VacancyManager *mVacancyManager;    /// Менеджер вакансий
+    hh_manager::Data mHHDictData;                   /// Данные словаря hh_manager
+
+    QStringList headers;
 };

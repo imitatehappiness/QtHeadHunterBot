@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
 
     if (styleQSS.size() == 0){
         QMessageBox mBox;
-        mBox.setWindowIcon(QIcon(":/resources/icons/hh-logo.png"));
+        mBox.setWindowIcon(QIcon(":/resources/icons/hh_manager-logo.png"));
         mBox.setIcon(QMessageBox::Warning);
         mBox.setText("Ошибка чтения appstyles.qss!\nПрограмма может работать некорректно!!");
         mBox.setButtonText(QMessageBox::Ok, "Ok");

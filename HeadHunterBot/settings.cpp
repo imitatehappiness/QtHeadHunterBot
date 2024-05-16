@@ -110,8 +110,3 @@ void Settings::setXsrf(const QString &xsrf){
 void Settings::setUrl(const QString &url){
     mUrl = url;
 }
-
-
-
-
-

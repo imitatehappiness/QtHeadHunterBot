@@ -12,12 +12,14 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     popup.cpp \
-    settings.cpp
+    settings.cpp \
+    vacancymanager.cpp
 
 HEADERS += \
     mainwindow.h \
     popup.h \
-    settings.h
+    settings.h \
+    vacancymanager.h
 
 FORMS += \
     mainwindow.ui

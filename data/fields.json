@@ -1,0 +1,866 @@
+{
+  "employer_active_vacancies_order": [
+    {
+      "id": "expiration_date_desc",
+      "name": "по убыванию даты"
+    },
+    {
+      "id": "expiration_date_asc",
+      "name": "по дате"
+    },
+    {
+      "id": "name_desc",
+      "name": "по заголовку, в обратном порядке"
+    },
+    {
+      "id": "name_asc",
+      "name": "по заголовку"
+    }
+  ],
+  "business_trip_readiness": [
+    {
+      "id": "ready",
+      "name": "Готов к командировкам"
+    },
+    {
+      "id": "sometimes",
+      "name": "Готов к редким командировкам"
+    },
+    {
+      "id": "never",
+      "name": "Не готов к командировкам"
+    }
+  ],
+  "vacancy_search_fields": [
+    {
+      "id": "name",
+      "name": "в названии вакансии"
+    },
+    {
+      "id": "company_name",
+      "name": "в названии компании"
+    },
+    {
+      "id": "description",
+      "name": "в описании вакансии"
+    }
+  ],
+  "resume_search_label": [
+    {
+      "id": "with_photo",
+      "name": "Только с фотографией"
+    },
+    {
+      "id": "only_with_salary",
+      "name": "Не показывать резюме без зарплаты"
+    },
+    {
+      "id": "only_with_age",
+      "name": "Не показывать резюме без указания возраста"
+    },
+    {
+      "id": "only_with_gender",
+      "name": "Не показывать резюме без указания пола"
+    }
+  ],
+  "currency": [
+    {
+      "code": "RUR",
+      "name": "Рубли",
+      "in_use": true,
+      "default": true,
+      "rate": 1,
+      "abbr": "руб."
+    },
+    {
+      "code": "AZN",
+      "name": "Манаты",
+      "in_use": false,
+      "default": false,
+      "rate": 0.018414,
+      "abbr": "AZN"
+    },
+    {
+      "code": "BYR",
+      "name": "Белорусские рубли",
+      "in_use": false,
+      "default": false,
+      "rate": 268.000954,
+      "abbr": "бел. руб."
+    },
+    {
+      "code": "EUR",
+      "name": "Евро",
+      "in_use": true,
+      "default": false,
+      "rate": 0.015968,
+      "abbr": "EUR"
+    },
+    {
+      "code": "GEL",
+      "name": "Грузинский лари",
+      "in_use": false,
+      "default": false,
+      "rate": 0.0344,
+      "abbr": "GEL"
+    },
+    {
+      "code": "KGS",
+      "name": "Киргизский сом",
+      "in_use": false,
+      "default": false,
+      "rate": 1.100873,
+      "abbr": "KGS"
+    },
+    {
+      "code": "KZT",
+      "name": "Тенге",
+      "in_use": false,
+      "default": false,
+      "rate": 3.278667,
+      "abbr": "KZT"
+    },
+    {
+      "code": "UAH",
+      "name": "Гривны",
+      "in_use": false,
+      "default": false,
+      "rate": 0.386118,
+      "abbr": "грн."
+    },
+    {
+      "code": "USD",
+      "name": "Доллары",
+      "in_use": true,
+      "default": false,
+      "rate": 0.017551,
+      "abbr": "USD"
+    },
+    {
+      "code": "UZS",
+      "name": "Узбекский сум",
+      "in_use": false,
+      "default": false,
+      "rate": 45.022939,
+      "abbr": "UZS"
+    }
+  ],
+  "travel_time": [
+    {
+      "id": "any",
+      "name": "Не имеет значения"
+    },
+    {
+      "id": "less_than_hour",
+      "name": "Не более часа"
+    },
+    {
+      "id": "from_hour_to_one_and_half",
+      "name": "Не более полутора часов"
+    }
+  ],
+  "education_level": [
+    {
+      "id": "higher",
+      "name": "Высшее"
+    },
+    {
+      "id": "bachelor",
+      "name": "Бакалавр"
+    },
+    {
+      "id": "master",
+      "name": "Магистр"
+    },
+    {
+      "id": "candidate",
+      "name": "Кандидат наук"
+    },
+    {
+      "id": "doctor",
+      "name": "Доктор наук"
+    },
+    {
+      "id": "unfinished_higher",
+      "name": "Неоконченное высшее"
+    },
+    {
+      "id": "secondary",
+      "name": "Среднее"
+    },
+    {
+      "id": "special_secondary",
+      "name": "Среднее специальное"
+    }
+  ],
+  "preferred_contact_type": [
+    {
+      "id": "home",
+      "name": "Домашний телефон"
+    },
+    {
+      "id": "work",
+      "name": "Рабочий телефон"
+    },
+    {
+      "id": "cell",
+      "name": "Мобильный телефон"
+    },
+    {
+      "id": "email",
+      "name": "Эл. почта"
+    }
+  ],
+  "employment": [
+    {
+      "id": "full",
+      "name": "Полная занятость"
+    },
+    {
+      "id": "part",
+      "name": "Частичная занятость"
+    },
+    {
+      "id": "project",
+      "name": "Проектная работа"
+    },
+    {
+      "id": "volunteer",
+      "name": "Волонтерство"
+    },
+    {
+      "id": "probation",
+      "name": "Стажировка"
+    }
+  ],
+  "vacancy_label": [
+    {
+      "id": "with_address",
+      "name": "Только с адресом"
+    },
+    {
+      "id": "accept_handicapped",
+      "name": "Только доступные для людей с инвалидностью"
+    },
+    {
+      "id": "not_from_agency",
+      "name": "Без вакансий агентств"
+    }
+  ],
+  "resume_access_type": [
+    {
+      "id": "no_one",
+      "name": "не видно никому"
+    },
+    {
+      "id": "whitelist",
+      "name": "видно выбранным компаниям"
+    },
+    {
+      "id": "blacklist",
+      "name": "скрыто от выбранных компаний"
+    },
+    {
+      "id": "clients",
+      "name": "видно всем компаниям, зарегистрированным на HeadHunter"
+    },
+    {
+      "id": "everyone",
+      "name": "видно всему интернету"
+    },
+    {
+      "id": "direct",
+      "name": "доступно только по прямой ссылке"
+    }
+  ],
+  "negotiations_state": [
+    {
+      "id": "discard",
+      "name": "Отказ"
+    },
+    {
+      "id": "text",
+      "name": "Текст"
+    },
+    {
+      "id": "response",
+      "name": "Отклик"
+    },
+    {
+      "id": "discard_after_interview",
+      "name": "Отказ после интервью"
+    },
+    {
+      "id": "invitation",
+      "name": "Приглашение"
+    }
+  ],
+  "language_level": [
+    {
+      "id": "basic",
+      "name": "базовые знания"
+    },
+    {
+      "id": "can_read",
+      "name": "читаю профессиональную литературу"
+    },
+    {
+      "id": "can_pass_interview",
+      "name": "могу проходить интервью"
+    },
+    {
+      "id": "fluent",
+      "name": "свободно владею"
+    },
+    {
+      "id": "native",
+      "name": "родной"
+    }
+  ],
+  "resume_contacts_site_type": [
+    {
+      "id": "personal",
+      "name": "Другой сайт"
+    },
+    {
+      "id": "moi_krug",
+      "name": "Мой круг"
+    },
+    {
+      "id": "livejournal",
+      "name": "LiveJournal"
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn"
+    },
+    {
+      "id": "freelance",
+      "name": "Free-lance"
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook"
+    },
+    {
+      "id": "skype",
+      "name": "Skype"
+    },
+    {
+      "id": "icq",
+      "name": "ICQ"
+    },
+    {
+      "id": "jabber",
+      "name": "Jabber"
+    }
+  ],
+  "vacancy_search_order": [
+    {
+      "id": "publication_time",
+      "name": "по дате"
+    },
+    {
+      "id": "salary_desc",
+      "name": "по убыванию зарплаты"
+    },
+    {
+      "id": "salary_asc",
+      "name": "по возрастанию зарплаты"
+    },
+    {
+      "id": "relevance",
+      "name": "по соответствию"
+    },
+    {
+      "id": "distance",
+      "name": "по удалённости"
+    }
+  ],
+  "employer_hidden_vacancies_order": [
+    {
+      "id": "archive_time_asc",
+      "name": "по дате архивации"
+    },
+    {
+      "id": "archive_time_desc",
+      "name": "по убыванию даты архивации"
+    },
+    {
+      "id": "name_desc",
+      "name": "по заголовку, в обратном порядке"
+    },
+    {
+      "id": "name_asc",
+      "name": "по заголовку"
+    }
+  ],
+  "resume_search_order": [
+    {
+      "id": "publication_time",
+      "name": "по дате изменения"
+    },
+    {
+      "id": "salary_desc",
+      "name": "по убыванию зарплаты"
+    },
+    {
+      "id": "salary_asc",
+      "name": "по возрастанию зарплаты"
+    },
+    {
+      "id": "relevance",
+      "name": "по соответствию"
+    }
+  ],
+  "vacancy_relation": [
+    {
+      "id": "favorited",
+      "name": "В отобранных"
+    },
+    {
+      "id": "got_response",
+      "name": "Вы отправили резюме"
+    },
+    {
+      "id": "got_invitation",
+      "name": "Вас пригласили"
+    },
+    {
+      "id": "got_rejection",
+      "name": "Вам отказали"
+    },
+    {
+      "id": "blacklisted",
+      "name": "Скрыта из поиска"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "fullDay",
+      "name": "Полный день"
+    },
+    {
+      "id": "shift",
+      "name": "Сменный график"
+    },
+    {
+      "id": "flexible",
+      "name": "Гибкий график"
+    },
+    {
+      "id": "remote",
+      "name": "Удаленная работа"
+    },
+    {
+      "id": "flyInFlyOut",
+      "name": "Вахтовый метод"
+    }
+  ],
+  "resume_search_logic": [
+    {
+      "id": "all",
+      "name": "Все слова встречаются"
+    },
+    {
+      "id": "any",
+      "name": "Любое из слов встречается"
+    },
+    {
+      "id": "phrase",
+      "name": "Точная фраза встречается"
+    },
+    {
+      "id": "except",
+      "name": "Не встречаются"
+    }
+  ],
+  "negotiations_order": [
+    {
+      "id": "updated_at",
+      "name": "по дате обновления"
+    },
+    {
+      "id": "created_at",
+      "name": "по дате добавления"
+    }
+  ],
+  "resume_search_fields": [
+    {
+      "id": "everywhere",
+      "name": "везде"
+    },
+    {
+      "id": "title",
+      "name": "в названии резюме"
+    },
+    {
+      "id": "education",
+      "name": "в образовании"
+    },
+    {
+      "id": "skills",
+      "name": "в ключевых навыках"
+    },
+    {
+      "id": "experience",
+      "name": "в опыте работы"
+    },
+    {
+      "id": "experience_company",
+      "name": "в компаниях и отраслях"
+    },
+    {
+      "id": "experience_position",
+      "name": "в должностях"
+    },
+    {
+      "id": "experience_description",
+      "name": "в обязанностях"
+    }
+  ],
+  "vacancy_site": [
+    {
+      "id": "hh",
+      "name": "hh.ru"
+    },
+    {
+      "id": "rmr",
+      "name": "rabota.mail.ru"
+    }
+  ],
+  "resume_moderation_note": [
+    {
+      "id": "bad",
+      "name": "Резюме составлено небрежно."
+    },
+    {
+      "id": "block_full_name",
+      "name": "В резюме отсутствует полное имя кандидата."
+    },
+    {
+      "id": "bad_description",
+      "name": "Укажите желаемую позицию, чтобы повысить свои шансы найти работу."
+    },
+    {
+      "id": "block_no_education_place_or_date",
+      "name": "Отсутствуют данные об учебном заведении и дате его окончания."
+    },
+    {
+      "id": "bad_education",
+      "name": "Плохо описано образование."
+    },
+    {
+      "id": "bad_education_student",
+      "name": "Укажите полное название учебного заведения, факультет и планируемый год окончания."
+    },
+    {
+      "id": "block_no_function",
+      "name": "Опишите подробнее свои обязанности и функции."
+    },
+    {
+      "id": "block_work_place",
+      "name": "Не указаны названия мест работы."
+    },
+    {
+      "id": "no_company_name",
+      "name": "Укажите названия мест работы."
+    },
+    {
+      "id": "no_company_description",
+      "name": "Укажите сферу деятельности компаний, в которых Вы работали."
+    },
+    {
+      "id": "no_position",
+      "name": "Плохо описаны занимаемые должности."
+    },
+    {
+      "id": "no_date",
+      "name": "Отсутствуют даты начала и окончания работы."
+    },
+    {
+      "id": "bad_function",
+      "name": "Плохо описаны функции и обязанности."
+    },
+    {
+      "id": "not_enough_information",
+      "name": "Укажите больше дополнительной информации: владение иностранными языками, знание компьютерных программ и др."
+    },
+    {
+      "id": "lot_information",
+      "name": "Слишком много дополнительной информации."
+    },
+    {
+      "id": "no_recommendation",
+      "name": "Вы не предоставили ни одну рекомендацию."
+    },
+    {
+      "id": "careless_additional_information",
+      "name": "Обратите внимание на раздел «Ключевые навыки». Укажите в нём сведения, которые выгодно отличат Вас в качестве претендента на желаемую позицию. Проверьте орфографию и опечатки."
+    },
+    {
+      "id": "careless_photo",
+      "name": "Рекомендуем Вам изменить фотографию для резюме. Лучше размещать фотографии, где Вы изображены в деловом или повседневном костюме."
+    },
+    {
+      "id": "careless_key_skill_information",
+      "name": "Отредактируйте раздел «Ключевые навыки» Вашего резюме, поскольку указанная информация не вполне соответствует формату и/или содержит опечатки."
+    },
+    {
+      "id": "incorrect_phone_number",
+      "name": "В резюме указан несуществующий номер телефона. Если номер корректен, свяжитесь со службой поддержки"
+    }
+  ],
+  "employer_archived_vacancies_order": [
+    {
+      "id": "archive_time_asc",
+      "name": "по дате архивации"
+    },
+    {
+      "id": "archive_time_desc",
+      "name": "по убыванию даты архивации"
+    },
+    {
+      "id": "name_desc",
+      "name": "по заголовку, в обратном порядке"
+    },
+    {
+      "id": "name_asc",
+      "name": "по заголовку"
+    }
+  ],
+  "vacancy_cluster": [
+    {
+      "id": "specialization",
+      "name": "Специализация"
+    },
+    {
+      "id": "metro",
+      "name": "Метро"
+    },
+    {
+      "id": "schedule",
+      "name": "График работы"
+    },
+    {
+      "id": "area",
+      "name": "Регион"
+    },
+    {
+      "id": "experience",
+      "name": "Опыт работы"
+    },
+    {
+      "id": "label",
+      "name": "Исключение"
+    },
+    {
+      "id": "salary",
+      "name": "Зарплата"
+    },
+    {
+      "id": "employment",
+      "name": "Тип занятости"
+    },
+    {
+      "id": "professional_area",
+      "name": "Профобласть"
+    }
+  ],
+  "relocation_type": [
+    {
+      "id": "no_relocation",
+      "name": "не готов к переезду"
+    },
+    {
+      "id": "relocation_possible",
+      "name": "готов к переезду"
+    },
+    {
+      "id": "relocation_desirable",
+      "name": "хочу переехать"
+    }
+  ],
+  "messaging_status": [
+    {
+      "id": "ok",
+      "name": "Переписка доступна"
+    },
+    {
+      "id": "archived",
+      "name": "Вакансия отправлена в архив"
+    },
+    {
+      "id": "disabled_by_employer",
+      "name": "Работодатель отключил переписку"
+    },
+    {
+      "id": "resume_deleted",
+      "name": "Резюме удалено"
+    },
+    {
+      "id": "in_a_row_limit",
+      "name": "Вы отправили 5 сообщений подряд. Дождитесь ответа, чтобы написать еще"
+    },
+    {
+      "id": "no_invitation",
+      "name": "Переписка доступна только после приглашения"
+    },
+    {
+      "id": "overall_limit",
+      "name": "Превышено число сообщений в переписке"
+    },
+    {
+      "id": "prohibited",
+      "name": "Переписка недоступна"
+    }
+  ],
+  "negotiations_participant_type": [
+    {
+      "id": "applicant",
+      "name": "Соискатель"
+    },
+    {
+      "id": "employer",
+      "name": "Работодатель"
+    }
+  ],
+  "employer_type": [
+    {
+      "id": "company",
+      "name": "Прямой работодатель"
+    },
+    {
+      "id": "agency",
+      "name": "Кадровое агентство"
+    },
+    {
+      "id": "private_recruiter",
+      "name": "Частный рекрутер"
+    }
+  ],
+  "gender": [
+    {
+      "id": "male",
+      "name": "Мужской"
+    },
+    {
+      "id": "female",
+      "name": "Женский"
+    }
+  ],
+  "vacancy_billing_type": [
+    {
+      "id": "free",
+      "name": "Бесплатная"
+    },
+    {
+      "id": "standard",
+      "name": "Стандарт"
+    },
+    {
+      "id": "standard_plus",
+      "name": "Стандарт+"
+    },
+    {
+      "id": "premium",
+      "name": "Премиум"
+    }
+  ],
+  "experience": [
+    {
+      "id": "noExperience",
+      "name": "Нет опыта"
+    },
+    {
+      "id": "between1And3",
+      "name": "От 1 года до 3 лет"
+    },
+    {
+      "id": "between3And6",
+      "name": "От 3 до 6 лет"
+    },
+    {
+      "id": "moreThan6",
+      "name": "Более 6 лет"
+    }
+  ],
+  "employer_relation": [
+    {
+      "id": "blacklisted",
+      "name": "Скрыт из поиска вакансий"
+    }
+  ],
+  "resume_search_relocation": [
+    {
+      "id": "living_or_relocation",
+      "name": "Живут в указанном регионе или готовы переехать в него"
+    },
+    {
+      "id": "living",
+      "name": "Живут в указанном регионе"
+    },
+    {
+      "id": "living_but_relocation",
+      "name": "Живут в указанном регионе и готовы к переезду куда-либо"
+    },
+    {
+      "id": "relocation",
+      "name": "Не живут в указанном регионе, но готовы переехать в него"
+    }
+  ],
+  "vacancy_type": [
+    {
+      "id": "open",
+      "name": "Открытая"
+    },
+    {
+      "id": "closed",
+      "name": "Закрытая"
+    },
+    {
+      "id": "anonymous",
+      "name": "Анонимная"
+    },
+    {
+      "id": "direct",
+      "name": "Рекламная"
+    }
+  ],
+  "resume_status": [
+    {
+      "id": "not_published",
+      "name": "не опубликовано"
+    },
+    {
+      "id": "published",
+      "name": "опубликовано"
+    },
+    {
+      "id": "blocked",
+      "name": "заблокировано"
+    },
+    {
+      "id": "on_moderation",
+      "name": "на модерации"
+    }
+  ],
+  "resume_search_experience_period": [
+    {
+      "id": "all_time",
+      "name": "за всё время опыта"
+    },
+    {
+      "id": "last_year",
+      "name": "за последний год"
+    },
+    {
+      "id": "last_three_years",
+      "name": "за последние три года"
+    },
+    {
+      "id": "last_six_years",
+      "name": "за последние шесть лет"
+    }
+  ]
+}

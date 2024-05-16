@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>851</width>
-    <height>460</height>
+    <width>1200</width>
+    <height>754</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>800</width>
+    <width>0</width>
     <height>0</height>
    </size>
   </property>
@@ -29,122 +29,774 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>hh-bot</string>
+   <string>hh_bot-bot</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources/resources.qrc">
-    <normaloff>:/resources/icons/hh-logo.png</normaloff>:/resources/icons/hh-logo.png</iconset>
+    <normaloff>:/resources/icons/hh-logo.ico</normaloff>:/resources/icons/hh-logo.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="1">
-     <widget class="QPushButton" name="pB_turn">
-      <property name="text">
-       <string>Запустить</string>
-      </property>
-      <property name="turn" stdset="0">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="1">
-     <spacer name="verticalSpacer_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="1">
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QLineEdit" name="lE_idResume">
-        <property name="toolTip">
-         <string>id resume: Уникальный идентификатор вашего резюме на HeadHunter.</string>
-        </property>
-        <property name="placeholderText">
-         <string>ID resume</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLineEdit" name="lE_hhtoken">
-        <property name="toolTip">
-         <string>hhtoken: Токен API HeadHunter, необходимый для аутентификации.</string>
-        </property>
-        <property name="placeholderText">
-         <string>hhtoken</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLineEdit" name="lE_hhuid">
-        <property name="toolTip">
-         <string>hhuid: Идентификатор пользователя HeadHunter, связанный с вашей учетной записью.</string>
-        </property>
-        <property name="placeholderText">
-         <string>hhuid</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLineEdit" name="lE_xsrf">
-        <property name="toolTip">
-         <string>xsrf: Межсайтовый запрос поддельного токена для безопасной связи с веб-сайтом HeadHunter.</string>
-        </property>
-        <property name="placeholderText">
-         <string>xsrf</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLineEdit" name="lE_url">
-        <property name="toolTip">
-         <string>url: Ваш региональный url HeadHunter. Например &quot;https://moscow.hh.ru &quot;.</string>
-        </property>
-        <property name="placeholderText">
-         <string>url</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="2" rowspan="5" colspan="2">
-     <widget class="QTextBrowser" name="tE_logInfo">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
+    <item row="0" column="1" colspan="2">
+     <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
         <width>0</width>
         <height>0</height>
        </size>
       </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tab">
+       <attribute name="title">
+        <string>Продвижение</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="1" colspan="2">
+         <widget class="QTextBrowser" name="tE_logInfo">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QFrame" name="f_resume_menu">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>350</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="15" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_turn">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Запустить автоматическое обновление</string>
+             </property>
+             <property name="turn" stdset="0">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
+            <widget class="QPushButton" name="pB_load_resume_params">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Загрузить</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="0" colspan="2">
+            <widget class="Line" name="line">
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="midLineWidth">
+              <number>0</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_url">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>url: Ваш региональный url HeadHunter. Например &quot;https://moscow.hh_bot.ru &quot;.</string>
+             </property>
+             <property name="placeholderText">
+              <string>url</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_idResume">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>id resume: Уникальный идентификатор вашего резюме на HeadHunter.</string>
+             </property>
+             <property name="placeholderText">
+              <string>ID resume</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Параметры:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_hhuid">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>hh_botuid: Идентификатор пользователя HeadHunter, связанный с вашей учетной записью.</string>
+             </property>
+             <property name="placeholderText">
+              <string>hhuid</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0" colspan="2">
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Maximum</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>2</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="5" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_hhtoken">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>hh_bottoken: Токен API HeadHunter, необходимый для аутентификации.</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>hhtoken</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QPushButton" name="pB_save_resume_params">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Сохранить</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_xsrf">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>300</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>xsrf: Межсайтовый запрос поддельного токена для безопасной связи с веб-сайтом HeadHunter.</string>
+             </property>
+             <property name="placeholderText">
+              <string>xsrf</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_clear_resume_log">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Очистить лог</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_clear_resume_params">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Очистить параметры</string>
+             </property>
+            </widget>
+           </item>
+           <item row="12" column="0" colspan="2">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_2">
+       <attribute name="title">
+        <string>Парсинг резюме</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="0" rowspan="2">
+         <widget class="QFrame" name="f_parsing_menu">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>350</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Формат:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="11" column="0" colspan="2">
+            <widget class="QComboBox" name="cB_employment">
+             <item>
+              <property name="text">
+               <string>Все</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Полная занятость</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Частичная занятость</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Проектная работа</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Волонтерство</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Стажировка</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="9" column="0" colspan="2">
+            <widget class="QComboBox" name="cB_schedule">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string/>
+             </property>
+             <item>
+              <property name="text">
+               <string>Все</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Полный день</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Сменный график</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Гибкий график</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Удаленная работа</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Вахтовый метод</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="20" column="0" colspan="2">
+            <widget class="QComboBox" name="cB_order">
+             <item>
+              <property name="text">
+               <string>По дате</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>По убыванию дохода</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>По возрастанию дохода</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>По соответствию</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Искать только:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Фильтры:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Период:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="25" column="0" colspan="2">
+            <widget class="QSpinBox" name="sB_per_page">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QCheckBox" name="cB_only_description">
+             <property name="text">
+              <string>В описании вакансии</string>
+             </property>
+             <property name="search_field_id" stdset="0">
+              <UInt>2</UInt>
+             </property>
+            </widget>
+           </item>
+           <item row="28" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_getVanacy">
+             <property name="text">
+              <string>Получить список вакансий</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_keywords">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Ключевые слова</string>
+             </property>
+            </widget>
+           </item>
+           <item row="23" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Количество результатов:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QCheckBox" name="cB_only_company_name">
+             <property name="text">
+              <string>В названии компании</string>
+             </property>
+             <property name="search_field_id" stdset="0">
+              <UInt>1</UInt>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QCheckBox" name="cB_only_name">
+             <property name="text">
+              <string>В названии вакансии</string>
+             </property>
+             <property name="search_field_id" stdset="0">
+              <UInt>0</UInt>
+             </property>
+            </widget>
+           </item>
+           <item row="13" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Опыт работы:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="22" column="0" colspan="2">
+            <widget class="QDateEdit" name="dE_period">
+             <property name="toolTip">
+              <string>Дата, которая ограничивает снизу диапазон дат публикации вакансий.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="18" column="0" colspan="2">
+            <widget class="QCheckBox" name="cB_only_with_salary">
+             <property name="text">
+              <string>Только вакансии с указанным уровнем дохода</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="0">
+            <widget class="QSpinBox" name="sB_salary">
+             <property name="toolTip">
+              <string>Например: при указании 100 EUR будут найдены вакансии, где вилка зарплаты указана в рублях и после пересчёта в Евро близка к 100 EUR.</string>
+             </property>
+             <property name="maximum">
+              <number>100000000</number>
+             </property>
+             <property name="singleStep">
+              <number>10000</number>
+             </property>
+             <property name="value">
+              <number>100000</number>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" colspan="2">
+            <widget class="QComboBox" name="cB_region">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="14" column="0" colspan="2">
+            <widget class="QComboBox" name="cB_experience">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Опыт </string>
+             </property>
+             <item>
+              <property name="text">
+               <string>Все</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Нет опыта</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>От 1 года до 3 лет</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>От 3 до 6 лет</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Более 6 лет</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="29" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_exportToXML">
+             <property name="text">
+              <string>Выгрузить данные</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Регион:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="16" column="1">
+            <widget class="QComboBox" name="cB_currency">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <item>
+              <property name="text">
+               <string>₽</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>$</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>€</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="19" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Сортировка:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="26" column="0" colspan="2">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="15" column="0">
+            <widget class="QLabel" name="label_9">
+             <property name="text">
+              <string>Уровень дохода:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0" colspan="2">
+            <widget class="QLabel" name="label_11">
+             <property name="text">
+              <string>Занятоcть:</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="1" column="2" rowspan="2">
+         <widget class="QTableWidget" name="tW_vacancy">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="gridStyle">
+           <enum>Qt::SolidLine</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+          <attribute name="horizontalHeaderCascadingSectionResizes">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderMinimumSectionSize">
+           <number>40</number>
+          </attribute>
+          <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="horizontalHeaderStretchLastSection">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderDefaultSectionSize">
+           <number>30</number>
+          </attribute>
+          <attribute name="verticalHeaderHighlightSections">
+           <bool>true</bool>
+          </attribute>
+          <attribute name="verticalHeaderStretchLastSection">
+           <bool>false</bool>
+          </attribute>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
-    </item>
-    <item row="4" column="1">
-     <spacer name="verticalSpacer">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>
@@ -153,8 +805,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>851</width>
-     <height>20</height>
+     <width>1200</width>
+     <height>21</height>
     </rect>
    </property>
   </widget>

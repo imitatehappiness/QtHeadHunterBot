@@ -7,58 +7,58 @@
 #include <QPropertyAnimation>
 #include <QTimer>
 
-class PopUp : public QWidget{
+class PopUp : public QWidget {
     Q_OBJECT
     /**
-    * @brief Translucency property
+    * @brief Свойство прозрачности всплывающего окна
     */
     Q_PROPERTY(float popupOpacity READ getPopupOpacity WRITE setPopupOpacity)
     /**
-    * @brief Setting the transparency value
+    * @brief Установка значения прозрачности
     */
     void setPopupOpacity(float opacity);
     /**
-    * @brief Getting the transparency value
+    * @brief Получение значения прозрачности
     */
     float getPopupOpacity() const;
 public:
     /**
-    * @brief Constructor.
+    * @brief Конструктор.
     *
-    * @param parent The parent widget.
+    * @param parent Родительский виджет.
     */
-    explicit PopUp(QWidget *parent = 0);
+    explicit PopUp(QWidget *parent = nullptr);
 protected:
     /**
-    * @brief The background will be rendered using the redraw method
+    * @brief Фон будет отрисован с использованием метода перерисовки
     */
     void paintEvent(QPaintEvent *event);
 public slots:
     /**
-    * @brief Setting the text in the notification
+    * @brief Установка текста в уведомлении
     */
     void setPopupText(const QString& text);
     /**
-    * @brief Setting the text in the notificationthe proper method of displaying the widget
+    * @brief Метод отображения виджета
     *
-    * @details Necessary for the preliminary adjustment of the animation
+    * @details Необходим для предварительной настройки анимации
     */
     void show();
 private slots:
     /**
-    * @brief Starting the hide animation
+    * @brief Запуск анимации скрытия
     */
     void hideAnimation();
     /**
-    * @brief At the end of the animation, a check is made in this slot, is the widget visible, or does it need to be hidden
+    * @brief По завершении анимации проверяется видимость виджета и необходимость его скрытия
     */
     void hide();
 private:
-    QLabel mLabel;                      /// message
-    QGridLayout mLayout;                /// Placement for the label
-    QPropertyAnimation mAnimation;      /// Animation property for pop-up message
-    float mPopupOpacity;                /// Transparency level
-    QTimer *mTimer;                     /// Timer by which the widget will be hidden
+    QLabel mLabel;                      /// сообщение
+    QGridLayout mLayout;                /// расположение для метки
+    QPropertyAnimation mAnimation;      /// анимация для всплывающего сообщения
+    float mPopupOpacity;                /// уровень прозрачности
+    QTimer *mTimer;                     /// таймер, по которому будет скрыт виджет
 };
 
 #endif // POPUP_H
