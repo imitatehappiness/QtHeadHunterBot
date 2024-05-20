@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "ru_locale.h"
 
 #include <QApplication>
 #include <QProxyStyle>
@@ -20,9 +21,9 @@ int main(int argc, char *argv[]){
 
     if (styleQSS.size() == 0){
         QMessageBox mBox;
-        mBox.setWindowIcon(QIcon(":/resources/icons/hh_manager-logo.png"));
+        mBox.setWindowIcon(QIcon(":/resources/icons/HHManager-logo.png"));
         mBox.setIcon(QMessageBox::Warning);
-        mBox.setText("Ошибка чтения appstyles.qss!\nПрограмма может работать некорректно!!");
+        mBox.setText(HHManager::readError + " appstyles.qss");
         mBox.setButtonText(QMessageBox::Ok, "Ok");
         mBox.exec();
     }

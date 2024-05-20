@@ -11,14 +11,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    popup.cpp \
-    settings.cpp \
+    resumemanager.cpp \
     vacancymanager.cpp
 
 HEADERS += \
     mainwindow.h \
-    popup.h \
-    settings.h \
+    resumemanager.h \
+    ru_locale.h \
     vacancymanager.h
 
 FORMS += \

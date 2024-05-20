@@ -4,11 +4,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-//https://api.hh.ru/openapi/redoc#tag/Poisk-vakansij-dlya-soiskatelya/operation/get-vacancies-similar-to-resume
-namespace hh_manager{
-
-const QString VACANCU_URL = "https://api.hh.ru/vacancies?";
-const QString AREAS_URL = "https://api.hh.ru/areas";
+namespace HHManager{
 
 VacancyManager::VacancyManager(){
 
@@ -25,7 +21,7 @@ void VacancyManager::getVacancies(HHVacancyParams params){
     keywords.replace("%2F", "/");
 
     QNetworkAccessManager* manager = new QNetworkAccessManager();
-    QUrl url(VACANCU_URL + params.getParamsForUrl());
+    QUrl url(VACANCIES_URL + params.getParamsForUrl());
     QNetworkRequest request(url);
 
     connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseVacancies(QNetworkReply*)));
@@ -186,6 +182,5 @@ void VacancyManager::responseAreas(QNetworkReply *reply) {
     reply->deleteLater();
     emit updateAreas();
 }
-
 
 }

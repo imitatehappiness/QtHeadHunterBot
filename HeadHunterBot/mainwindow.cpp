@@ -2,83 +2,69 @@
 #include "qglobal.h"
 #include "ui_mainwindow.h"
 
-#include "settings.h"
-#include "PopUp.h"
+#include "ru_locale.h"
 
 #include <QCheckBox>
 #include <QAction>
 #include <QWidgetAction>
 #include <QFileDialog>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QStyle>
 #include <QCloseEvent>
 #include <QIcon>
 #include <QDateTime>
 #include <QMessageBox>
 #include <QTextCursor>
-#include <QMediaPlayer>
-#include <QNetworkCookieJar>
 #include <QRegularExpression>
-#include <QNetworkAccessManager>
-#include <QUrlQuery>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 #include <QDesktopServices>
 #include <QIntValidator>
 #include <QTableWidget>
-#include <QFile>
 #include <QXmlStreamWriter>
 
-const uint FOUR_HOUR = 14460;
 const QString AUTHOR = "@imitatehappiness";
 const QString TOUCH_URL = "https://hh.ru/applicant/resumes/touch";
 const QString LOGO_PATH = ":/resources/icons/hh-logo.png";
 const QString TITLE = AUTHOR + " | hh-bot";
-const QString STRONG_STYLE = "<strong style=\"color: #0d6efd;\">";
-
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , mResumeSettingMenu(new QMenu(tr("&Продвижение"),this))
-    , mParsingSettingMenu(new QMenu(tr("&Парсинг резюме"),this))
+    , mResumeSettingMenu(new QMenu(HHManager::promotion,this))
+    , mParsingSettingMenu(new QMenu(HHManager::parsingResume,this))
     , mTrayMenu(new QMenu(this))
-    , mTimer(new QTimer(this))
-    , mNotification(new PopUp(this))
 {
     ui->setupUi(this);
-
-    mVacancyManager = new hh_manager::VacancyManager();
-    mVacancyManager->getAreas();
-
     setWindowTitle(TITLE);
 
-    initResumeSettingMenu();
-    initTrayMenu();
+    this->mVacancyManager = new HHManager::VacancyManager();
+    this->mVacancyManager->getAreas();
+    this->mResumeManager = new HHManager::ResumeManager();
 
-    connect(mTimer, SIGNAL(timeout()), this, SLOT(requestOnTimer()));
-    connect(mVacancyManager, SIGNAL(updateTable()), this, SLOT(updateVacancyTable()));
-    connect(mVacancyManager, SIGNAL(updateAreas()), this, SLOT(updateRegionCb()));
+    this->initResumeSettingMenu();
+    this->initTrayMenu();
+
+    connect(this->mVacancyManager, SIGNAL(updateTable()), this, SLOT(updateVacancyTable()));
+    connect(this->mVacancyManager, SIGNAL(updateAreas()), this, SLOT(updateRegionCb()));
+
+    connect(this->mResumeManager, SIGNAL(moveCursorToEnd()), this, SLOT(moveCursorToEnd()));
+    connect(this->mResumeManager, SIGNAL(displayMessage(QString)), this, SLOT(displayMessage(QString)));
+    connect(this->mResumeManager, SIGNAL(updateTurnBtn(QString, bool)), this, SLOT(updateTurnBtn(QString, bool)));
+    connect(this->mResumeManager, SIGNAL(showMessageBox(QString)), this, SLOT(showMessageBox(QString)));
 
     QDate currentDate = QDate::currentDate();
     QDate period = currentDate.addDays(-5);
 
-    headers = QStringList()
-            << trUtf8("")
-            << trUtf8("ID")
-            << trUtf8("Название")
-            << trUtf8("Компания")
-            << trUtf8("Требуемый опыт работы")
-            << trUtf8("Регион")
-            << trUtf8("Формат")
-            << trUtf8("Занятость")
-            << trUtf8("Зарплата")
-            << trUtf8("Дата публикации");
+    this->headers = QStringList()
+            << ""
+            << HHManager::idHeader
+            << HHManager::nameHeader
+            << HHManager::companyHeader
+            << HHManager::experienceHeader
+            << HHManager::regionHeader
+            << HHManager::scheduleHeader
+            << HHManager::employmentHeader
+            << HHManager::salaryHeader
+            << HHManager::publicationDateHeader;
 
     ui->dE_period->setDate(period);
-
 }
 
 MainWindow::~MainWindow(){
@@ -101,136 +87,27 @@ void MainWindow::show(){
     }
 }
 
-void MainWindow::loadSetting(){
+void MainWindow::loadResumeParams(){
     QString fileName = QFileDialog::getOpenFileName(this, "", "", tr("Settings (*.json);;All Files (*)"));
     if("" != fileName){
-        Settings::instance().loadSettings(fileName);
+        HHManager::ResumeSettings::instance().loadSettings(fileName);
 
-        ui->lE_idResume->setText(Settings::instance().getIDResume());
-        ui->lE_hhtoken->setText(Settings::instance().getHhtoken());
-        ui->lE_hhuid->setText(Settings::instance().getHhuid());
-        ui->lE_xsrf->setText(Settings::instance().getXsrf());
-        ui->lE_url->setText(Settings::instance().getUrl());
+        ui->lE_idResume->setText(HHManager::ResumeSettings::instance().getIDResume());
+        ui->lE_hhtoken->setText(HHManager::ResumeSettings::instance().getHhtoken());
+        ui->lE_hhuid->setText(HHManager::ResumeSettings::instance().getHhuid());
+        ui->lE_xsrf->setText(HHManager::ResumeSettings::instance().getXsrf());
+        ui->lE_url->setText(HHManager::ResumeSettings::instance().getUrl());
 
-        updateTurnBtn("Запустить автоматическое обновление", false);
+        this->updateTurnBtn(HHManager::startAutoUpdate, false);
     }
 }
 
-void MainWindow::saveSetting(){
+void MainWindow::saveResumeParams(){
     QString fileName = QFileDialog::getSaveFileName(this, "", "", tr("Settings (*.json);;All Files (*)"));
     if("" != fileName){
-        setSettings();
-        Settings::instance().saveSettings(fileName);
+        this->setResumeParams();
+        HHManager::ResumeSettings::instance().saveSettings(fileName);
     }
-}
-
-void MainWindow::requestOnTimer(){
-    sendRequest();
-}
-
-void MainWindow::responseFromServer(QNetworkReply *reply){
-    QString httpStatusCode = reply->attribute( QNetworkRequest::HttpStatusCodeAttribute ).toString();
-    QString httpReasonPhrase = reply->attribute( QNetworkRequest::HttpReasonPhraseAttribute ).toString();
-
-    QString color;
-
-    displayMessage("Обновление резюме");
-
-    if(httpStatusCode >= "200" && httpStatusCode <= "299"){
-        color = "green";
-
-        QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR * 1000);
-
-        mNotification->setPopupText("Резюме успешно обновлено");
-        displayMessage("<strong style=\"color: " + color + ";\">Резюме успешно обновлено</strong>");
-        displayMessage("Следующая проверка обновления: " + STRONG_STYLE + mNextUpdate.toString(Qt::DefaultLocaleShortDate) + "</strong>");
-
-        mTimer->start();
-
-    }else
-    {
-        if(httpStatusCode >= "300" && httpStatusCode <= "399"){
-            color = "orange";
-        }else{
-            color = "red";
-        }
-
-        mNotification->setPopupText("Ошибка обновления\nCode: " + httpStatusCode);
-
-        displayMessage("<strong style=\"color: " + color + ";\">Ошибка обновления</strong>");
-        displayMessage("<strong style=\"color: " + color + ";\">Code: " + httpStatusCode + "</strong>");
-
-        displayMessage("Авто-обновление выключено");
-
-        updateTurnBtn("Запустить автоматическое обновление", false);
-    }
-
-    reply->deleteLater();
-    MoveCursorToEnd();
-}
-
-void MainWindow::RequestmNextUpdateFinished(){
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-
-    enum status{error, update_available, update_not_available};
-    status update = status::error;
-    QString message = "Ошибка при получении HTML-содержимого";
-
-    if (reply->error() == QNetworkReply::NoError) {
-        QString htmlContent = reply->readAll();
-
-        QRegularExpression disabled("<button\\s+class=\"bloko-button bloko-button_kind-primary bloko-button_stretched\" type=\"button(.*?)=\"resume-update-button\"><span>Обновить дату </span></button>");
-        QRegularExpressionMatch match = disabled.match(htmlContent);
-        if (match.hasMatch()) {
-            if(!match.captured(1).contains("disabled")){
-                update = status::update_available;
-                message = "Обновление доступно";
-                mTimer->setInterval(FOUR_HOUR * 1000);
-            }else{
-                QRegularExpression nextUpdate("<div\\s+class=\"resume-sidebar-text\"\\s+data-qa=\"resume-update-message\">(.*?)</div>");
-                match = nextUpdate.match(htmlContent);
-                if(match.hasMatch()){
-                    message = match.captured(1);
-                    message = message.left(message.indexOf("«")).trimmed();
-                    update = status::update_not_available;
-                    mTimer->setInterval(FOUR_HOUR / 8 * 1000);
-                    mTimer->start();
-                }
-            }
-        }
-    }
-
-    displayMessage("Проверка обновления....");
-    displayMessage(message);
-
-    if(update == status::update_not_available){
-        QDateTime mNextUpdate = QDateTime::currentDateTime().addMSecs(FOUR_HOUR / 8 * 1000);
-        displayMessage("Следующая проверка: " + STRONG_STYLE + mNextUpdate.toString(Qt::DefaultLocaleShortDate) + "</strong>");
-    }
-
-    if(reply->error() == QNetworkReply::NoError && update == status::update_available){
-        QNetworkAccessManager* manager = new QNetworkAccessManager(this);
-        QNetworkRequest request = getRequest(TOUCH_URL);
-        QByteArray postData = "resume=" + Settings::instance().getIDResume().toUtf8() + "&undirectable=" + "true";\
-        connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(responseFromServer(QNetworkReply*)));
-        manager->post(request, postData);
-    }
-
-    if (message == "Ошибка при получении HTML-содержимого"){
-        updateTurnBtn("Запустить автоматическое обновление", false);
-        displayMessage("Авто-обновление выключено");
-    }
-
-    if(update == status::error){
-        showMessageBox(message + "\nПроверьте корректность введённых параметров.\t\n");
-        updateTurnBtn("Запустить автоматическое обновление", false);
-    }else{
-        mNotification->setPopupText(message);
-        mNotification->show();
-    }
-
-    reply->deleteLater();
-    MoveCursorToEnd();
 }
 
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason){
@@ -243,30 +120,17 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason){
     }
 }
 
-void MainWindow::setSettings(){
-    Settings::instance().setIDResume(ui->lE_idResume->text());
-    Settings::instance().setHhtoken(ui->lE_hhtoken->text());
-    Settings::instance().setHhuid(ui->lE_hhuid->text());
-    Settings::instance().setXsrf(ui->lE_xsrf->text());
-    Settings::instance().setUrl(ui->lE_url->text());
-}
-
-void MainWindow::sendRequest(){
-    setSettings();
-    {
-        QString url = Settings::instance().getUrl().toUtf8();
-        if(url[url.size() - 1] != "/"){
-            url += "/";
-        }
-        QNetworkRequest request = getRequest(url + "resume/" + Settings::instance().getIDResume().toUtf8());
-        QNetworkAccessManager* managermNextUpdate = new QNetworkAccessManager(this);
-        QNetworkReply *reply = managermNextUpdate->get(request);
-        connect(reply, SIGNAL(finished()), this, SLOT(RequestmNextUpdateFinished()));
-    }
+void MainWindow::setResumeParams(){
+    HHManager::ResumeSettings::instance().setIDResume(ui->lE_idResume->text());
+    HHManager::ResumeSettings::instance().setHhtoken(ui->lE_hhtoken->text());
+    HHManager::ResumeSettings::instance().setHhuid(ui->lE_hhuid->text());
+    HHManager::ResumeSettings::instance().setXsrf(ui->lE_xsrf->text());
+    HHManager::ResumeSettings::instance().setUrl(ui->lE_url->text());
 }
 
 QString MainWindow::getCurrentDateTime(){
-    return QDateTime::currentDateTime().toString(Qt::DefaultLocaleShortDate);
+    QLocale locale;
+    return locale.toString(QDateTime::currentDateTime(), QLocale::ShortFormat);
 }
 
 void MainWindow::showMessageBox(const QString &mesasge){
@@ -279,34 +143,10 @@ void MainWindow::showMessageBox(const QString &mesasge){
     msgBox.exec();
 }
 
-void MainWindow::MoveCursorToEnd(){
+void MainWindow::moveCursorToEnd(){
     QTextCursor cursor = ui->tE_logInfo->textCursor();
     cursor.movePosition(QTextCursor::End);
     ui->tE_logInfo->setTextCursor(cursor);
-}
-
-void MainWindow::playSound(const QString &path){
-    QMediaPlayer *player = new QMediaPlayer(this);
-    player->setMedia(QUrl::fromLocalFile(path));
-    player->setVolume(70);
-    player->play();
-}
-
-QNetworkRequest MainWindow::getRequest(const QString &url){
-    QNetworkRequest request((QUrl(url)));
-
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded; charset=UTF-8");
-    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
-    request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
-
-    request.setRawHeader("X-Xsrftoken", Settings::instance().getXsrf().toUtf8());
-
-    request.setRawHeader("Cookie", "hhtoken=" + Settings::instance().getHhtoken().toUtf8() + "; " +
-                         "hhuid=" + Settings::instance().getHhuid().toUtf8() + "; " +
-                         "_xsrf=" + Settings::instance().getXsrf().toUtf8() + "; "
-                         );
-
-    return request;
 }
 
 bool MainWindow::checkCorrectlyFields(){
@@ -338,7 +178,7 @@ bool MainWindow::hasMatch(const QString &re, const QString &text){
 
 void MainWindow::initResumeSettingMenu() {
     // Resume
-    QCheckBox *checkBox_resume = new QCheckBox(tr("Скрыть панель с параметрами"));
+    QCheckBox *checkBox_resume = new QCheckBox(HHManager::hideParamsPanel);
 
     QHBoxLayout *layout_resume = new QHBoxLayout();
     layout_resume->addWidget(checkBox_resume);
@@ -350,7 +190,7 @@ void MainWindow::initResumeSettingMenu() {
     QWidgetAction *widgetAction_resume = new QWidgetAction(this);
     widgetAction_resume->setDefaultWidget(widget_resume);
 
-    mResumeSettingMenu->addAction(widgetAction_resume);
+    this->mResumeSettingMenu->addAction(widgetAction_resume);
 
     QObject::connect(checkBox_resume, &QCheckBox::stateChanged, this, [this](int state) {
         if (state == Qt::Checked) {
@@ -363,7 +203,7 @@ void MainWindow::initResumeSettingMenu() {
     menuBar()->addMenu(mResumeSettingMenu);
 
     // Parsing
-    QCheckBox *checkBox_parsing = new QCheckBox(tr("Скрыть панель с параметрами"));
+    QCheckBox *checkBox_parsing = new QCheckBox(HHManager::hideParamsPanel);
 
     QHBoxLayout *layout_parsing = new QHBoxLayout();
     layout_parsing->addWidget(checkBox_parsing);
@@ -375,7 +215,7 @@ void MainWindow::initResumeSettingMenu() {
     QWidgetAction *widgetAction_parsing = new QWidgetAction(this);
     widgetAction_parsing->setDefaultWidget(widget_parsing);
 
-    mParsingSettingMenu->addAction(widgetAction_parsing);
+    this->mParsingSettingMenu->addAction(widgetAction_parsing);
 
     QObject::connect(checkBox_parsing , &QCheckBox::stateChanged, this, [this](int state) {
         if (state == Qt::Checked) {
@@ -383,7 +223,6 @@ void MainWindow::initResumeSettingMenu() {
         } else {
             ui->f_parsing_menu->show();
         }
-        //updateVacancyTable();
     });
 
     menuBar()->addMenu(mParsingSettingMenu);
@@ -391,22 +230,22 @@ void MainWindow::initResumeSettingMenu() {
 
 void MainWindow::initTrayMenu(){
     QSystemTrayIcon* trayIcon = new QSystemTrayIcon(this);
-    QAction* viewWindow = new QAction("Открыть панель", this);
-    QAction* quitAction = new QAction("Выход", this);
+    QAction* viewWindow = new QAction(HHManager::openParamsPanel, this);
+    QAction* quitAction = new QAction(HHManager::exitApp, this);
 
-    mTrayMenu->addAction(viewWindow);
-    mTrayMenu->addAction(quitAction);
+    this->mTrayMenu->addAction(viewWindow);
+    this->mTrayMenu->addAction(quitAction);
 
     trayIcon->setIcon((QIcon(LOGO_PATH)));
     trayIcon->setContextMenu(mTrayMenu);
     trayIcon->show();
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-
     connect(viewWindow, SIGNAL(triggered()), this, SLOT(show()));
+
     QObject::connect(quitAction, &QAction::triggered, this, [this](){
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, TITLE, "Вы действительно хотите закрыть приложение?\n", QMessageBox::Yes | QMessageBox::No);
+        reply = QMessageBox::question(this, TITLE, HHManager::confirmExit + "\n", QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::No) {
             show();
         }else if (reply == QMessageBox::Yes) {
@@ -428,14 +267,14 @@ void MainWindow::displayMessage(QString message){
 }
 
 void MainWindow::exportTableToXml(){
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Сохранить как"), "", tr("XML Files (*.xml)"));
+    QString fileName = QFileDialog::getSaveFileName(this, HHManager::saveAs, "", tr("XML Files (*.xml)"));
     if (fileName.isEmpty()) {
         return;
     }
 
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this, tr("Уведомление"), tr("Не удалось открыть файл для записи: \n%1\n").arg(file.errorString()));
+        QMessageBox::warning(this, HHManager::notification, HHManager::fileOpenError + (": \n" + file.errorString() + "\n"));
         return;
     }
 
@@ -489,19 +328,19 @@ void MainWindow::exportTableToXml(){
     xmlWriter.writeEndDocument();
 
     file.close();
-    QMessageBox::information(this, tr("Уведомление"), tr("Данные таблицы успешно экспортированы:\n%1\n").arg(fileName));
+    QMessageBox::information(this, HHManager::notification, HHManager::tableDataExported + ":\n" + fileName + "\n");
 }
 
 
 void MainWindow::updateRegionCb(){
-    QString parent_id = mHHDictData.areaDict[0];
+    QString parent_id = areaDict[0];
     ui->cB_region->clear();
 
     if (parent_id.size() > 0){
         ui->cB_region->addItem("Все");
-        foreach (auto key, mVacancyManager->areas.keys()) {
+        foreach (auto key, this->mVacancyManager->areas.keys()) {
             if (key == parent_id) {
-                foreach (auto region, mVacancyManager->areas[key]) {
+                foreach (auto region, this->mVacancyManager->areas[key]) {
                     ui->cB_region->addItem(region.second);
                 }
             }
@@ -525,10 +364,10 @@ void MainWindow::updateVacancyTable() {
     // Disable editing
     ui->tW_vacancy->setEditTriggers(QAbstractItemView::NoEditTriggers);
     // Set the number of rows to match the number of vacancies
-    ui->tW_vacancy->setRowCount(mVacancyManager->vacancies.size());
+    ui->tW_vacancy->setRowCount(this->mVacancyManager->vacancies.size());
 
-    for (int i = 0; i < mVacancyManager->vacancies.size(); ++i) {
-        const hh_manager::Vacancy& vacancy = mVacancyManager->vacancies[i];
+    for (int i = 0; i < this->mVacancyManager->vacancies.size(); ++i) {
+        const HHManager::Vacancy& vacancy = this->mVacancyManager->vacancies[i];
 
         QPushButton *button = new QPushButton(vacancy.id);
         button->setStyleSheet("QPushButton {"
@@ -541,7 +380,10 @@ void MainWindow::updateVacancyTable() {
                               "}");
         button->setProperty("url", vacancy.alternateUrl);
         button->setProperty("id", vacancy.id);
-        connect(button, &QPushButton::clicked, this, [this, url = vacancy.alternateUrl](){ QDesktopServices::openUrl(QUrl(url)); });
+        connect(button, &QPushButton::clicked, this, [ url = vacancy.alternateUrl](){
+            QDesktopServices::openUrl(QUrl(url));
+        });
+
         ui->tW_vacancy->setCellWidget(i, 1, button);
 
         QTableWidgetItem *item_name = new QTableWidgetItem(vacancy.name);
@@ -562,17 +404,17 @@ void MainWindow::updateVacancyTable() {
         QString salary;
         if (vacancy.salary.currency.size() > 0) {
             if (vacancy.salary.from > 0 && vacancy.salary.to > 0) {
-                salary = "От " + QString::number(vacancy.salary.from) + " до " + QString::number(vacancy.salary.to);
+                salary = HHManager::from + " " + QString::number(vacancy.salary.from) + " " + HHManager::to + " " + QString::number(vacancy.salary.to);
                 salary += " " + vacancy.salary.currency;
             } else if (vacancy.salary.from > 0) {
-                salary = "От " + QString::number(vacancy.salary.from);
+                salary = HHManager::from + " " + QString::number(vacancy.salary.from);
                 salary += " " + vacancy.salary.currency;
             } else if (vacancy.salary.to > 0) {
-                salary = "До " + QString::number(vacancy.salary.to);
+                salary = HHManager::to + " " + QString::number(vacancy.salary.to);
                 salary += " " + vacancy.salary.currency;
             }
             if (vacancy.salary.gross) {
-                salary += " до вычета налогов";
+                salary += " " + HHManager::beforeTax;
             }
         }
 
@@ -595,23 +437,23 @@ void MainWindow::updateVacancyTable() {
     ui->tW_vacancy->resizeColumnsToContents();
     ui->tW_vacancy->horizontalHeader()->setStretchLastSection(true);
     ui->tW_vacancy->horizontalHeader()->setSectionResizeMode(headers.size() - 1, QHeaderView::Stretch);
-
 }
 
 void MainWindow::on_pB_turn_clicked(){
+    setResumeParams();
     if (ui->pB_turn->property("turn") == true){
-        displayMessage("Авто-обновление выключено");
-        mTimer->stop();
-        MoveCursorToEnd();
-        updateTurnBtn("Запустить автоматическое обновление", false);
+        displayMessage(HHManager::autoUpdateDisabled);
+        mResumeManager->stopTimer();
+        moveCursorToEnd();
+        updateTurnBtn(HHManager::startAutoUpdate, false);
     }else{
         if(!checkCorrectlyFields()){
-            showMessageBox("Заполните поля корректными значениями!\t\n");
+            showMessageBox(HHManager::fillCorrectValues + "!\t\n");
         }else{
-            displayMessage("Авто-обновление включено");
-            mTimer->setInterval(FOUR_HOUR * 1000);
-            sendRequest();
-            updateTurnBtn("Остановить автоматическое обновление", true);
+            displayMessage(HHManager::autoUpdateEnabled);
+            mResumeManager->setTimerInterval(FOUR_HOUR * 1000);
+            mResumeManager->sendRequest();
+            updateTurnBtn(HHManager::stopAutoUpdate, true);
         }
     }
 }
@@ -619,7 +461,8 @@ void MainWindow::on_pB_turn_clicked(){
 void MainWindow::on_pB_getVanacy_clicked(){
     ui->tW_vacancy->clear();
 
-    hh_manager::HHVacancyParams params;
+    HHManager::HHVacancyParams params;
+
     params.text = ui->lE_keywords->text();
     params.text.replace(" ", "%20");
     params.text.replace("+", "%2B");
@@ -629,32 +472,32 @@ void MainWindow::on_pB_getVanacy_clicked(){
     params.text.replace("/", "%2F");
 
     if (ui->cB_region->currentIndex() == 0){
-        params.area = mHHDictData.areaDict[0];
+        params.area = areaDict[0];
     }
     else{
-        params.area = mVacancyManager->regionDict[ui->cB_region->currentText()];
+        params.area = this->mVacancyManager->regionDict[ui->cB_region->currentText()];
     }
 
     params.perPage = QString::number(ui->sB_per_page->value());
-    params.schedule = mHHDictData.scheduleDict[ui->cB_schedule->currentIndex()];
-    params.experience = mHHDictData.experienceDict[ui->cB_experience->currentIndex()];
+    params.schedule = scheduleDict[ui->cB_schedule->currentIndex()];
+    params.experience = experienceDict[ui->cB_experience->currentIndex()];
 
     if (ui->cB_only_name->isChecked()){
-        params.searchField.append(mHHDictData.searchFieldDict[ui->cB_only_name->property("search_field_id").toInt()]) ;
+        params.searchField.append(searchFieldDict[ui->cB_only_name->property("search_field_id").toInt()]) ;
     }
 
     if (ui->cB_only_company_name->isChecked()){
-        params.searchField.append(mHHDictData.searchFieldDict[ui->cB_only_company_name->property("search_field_id").toInt()]) ;
+        params.searchField.append(searchFieldDict[ui->cB_only_company_name->property("search_field_id").toInt()]) ;
     }
 
     if (ui->cB_only_description->isChecked()){
-        params.searchField.append(mHHDictData.searchFieldDict[ui->cB_only_description->property("search_field_id").toInt()]) ;
+        params.searchField.append(searchFieldDict[ui->cB_only_description->property("search_field_id").toInt()]) ;
     }
 
     if (ui->sB_salary->value() > 0){
         params.salary = QString::number(ui->sB_salary->value());
     }
-    params.currency = mHHDictData.currencyDict[ui->cB_currency->currentIndex()];
+    params.currency = currencyDict[ui->cB_currency->currentIndex()];
 
     if (ui->cB_only_with_salary->isChecked()){
         params.onlyWithSalary = "true";
@@ -670,14 +513,14 @@ void MainWindow::on_pB_getVanacy_clicked(){
         params.period = QString::number(chooseDate.daysTo(currentDate));
     }
 
-    params.employment = mHHDictData.employmentDict[ui->cB_employment->currentIndex()];
-    params.order = mHHDictData.orderDict[ui->cB_order->currentIndex()];
-    mVacancyManager->getVacancies(params);
+    params.employment = employmentDict[ui->cB_employment->currentIndex()];
+    params.order = orderDict[ui->cB_order->currentIndex()];
+    this->mVacancyManager->getVacancies(params);
 }
 
 void MainWindow::on_pB_clear_resume_params_clicked(){
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, TITLE, "Вы действительно хотите очистить поля?\n", QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(this, TITLE, HHManager::clearFields + "\n", QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         ui->lE_hhtoken->clear();
         ui->lE_hhuid->clear();
@@ -688,27 +531,19 @@ void MainWindow::on_pB_clear_resume_params_clicked(){
 }
 
 void MainWindow::on_pB_save_resume_params_clicked(){
-    saveSetting();
+    this->saveResumeParams();
 }
 
 void MainWindow::on_pB_load_resume_params_clicked(){
-    loadSetting();
+    this->loadResumeParams();
 }
 
 void MainWindow::on_pB_clear_resume_log_clicked(){
     QMessageBox::StandardButton reply;
-    reply = QMessageBox::question(this, TITLE, "Вы действительно хотите очистить лог?\n", QMessageBox::Yes | QMessageBox::No);
+    reply = QMessageBox::question(this, TITLE, HHManager::clearLogs + "\n", QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes) {
         ui->tE_logInfo->clear();
     }
-}
-
-void MainWindow::on_cB_sort_vacancies_currentIndexChanged(int index){
-    this->updateVacancyTable();
-}
-
-void MainWindow::on_cB_area_currentIndexChanged(int index){
-    updateRegionCb();
 }
 
 void MainWindow::on_dE_period_userDateChanged(const QDate &date){
@@ -720,6 +555,7 @@ void MainWindow::on_dE_period_userDateChanged(const QDate &date){
 }
 
 void MainWindow::on_pB_exportToXML_clicked(){
-    exportTableToXml();
+    this->exportTableToXml();
 }
+
 
