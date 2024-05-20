@@ -349,6 +349,10 @@ void MainWindow::updateRegionCb(){
 }
 
 void MainWindow::updateVacancyTable() {
+
+    ui->tW_vacancy->clear();
+    ui->tW_vacancy->sortItems(-1);
+
     // Set the number of columns
     ui->tW_vacancy->setColumnCount(headers.size());
     // Enable grid
