@@ -106,7 +106,6 @@ windeployqt --compiler-runtime C:\project_folder\HeadHunterBot.exe
 # Демонстрация
 <img src="data/screen/updater_1.png" />
 <img src="data/screen/parsing_1.png" />
-<img src="data/screen/parsing_2.png" />
 
 ### parse_vacancies.xml
 
