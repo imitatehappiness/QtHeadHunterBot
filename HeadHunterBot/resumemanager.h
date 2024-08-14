@@ -1,5 +1,6 @@
 #pragma once
 
+#include "QtNetwork/qnetworkreply.h"
 #include <QObject>
 #include <QTimer>
 #include <QNetworkRequest>

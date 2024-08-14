@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent)
     , mParsingSettingMenu(new QMenu(HHManager::parsingResume,this))
     , mTrayMenu(new QMenu(this))
 {
+    qDebug()<<"QSslSocket="<<QSslSocket::sslLibraryBuildVersionString();
     ui->setupUi(this);
     setWindowTitle(TITLE);
 
@@ -57,9 +58,9 @@ MainWindow::MainWindow(QWidget *parent)
             << HHManager::idHeader
             << HHManager::nameHeader
             << HHManager::companyHeader
-            << HHManager::experienceHeader
-            << HHManager::regionHeader
             << HHManager::scheduleHeader
+            << HHManager::regionHeader
+            << HHManager::experienceHeader
             << HHManager::employmentHeader
             << HHManager::salaryHeader
             << HHManager::publicationDateHeader;
