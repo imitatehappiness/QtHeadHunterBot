@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
+    <width>700</width>
     <height>0</height>
    </size>
   </property>
@@ -52,7 +52,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -389,11 +389,38 @@
            <enum>QFrame::Raised</enum>
           </property>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="8" column="0">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Формат:</string>
+           <item row="15" column="1">
+            <widget class="QComboBox" name="cB_currency">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>50</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string/>
+             </property>
+             <item>
+              <property name="text">
+               <string>₽</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>$</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>€</string>
+              </property>
+             </item>
             </widget>
            </item>
            <item row="11" column="0" colspan="2">
@@ -428,6 +455,134 @@
                <string>Стажировка</string>
               </property>
              </item>
+            </widget>
+           </item>
+           <item row="23" column="0" colspan="2">
+            <widget class="Line" name="line_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0" colspan="2">
+            <widget class="QComboBox" name="cB_region">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="17" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Сортировка:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="20" column="0" colspan="2">
+            <widget class="QDateEdit" name="dE_period">
+             <property name="toolTip">
+              <string>Дата, которая ограничивает снизу диапазон дат публикации вакансий.</string>
+             </property>
+            </widget>
+           </item>
+           <item row="8" column="0">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Формат:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="21" column="0">
+            <widget class="QLabel" name="label_8">
+             <property name="text">
+              <string>Количество результатов:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QCheckBox" name="cB_only_name">
+             <property name="text">
+              <string>В названии вакансии</string>
+             </property>
+             <property name="search_field_id" stdset="0">
+              <UInt>0</UInt>
+             </property>
+            </widget>
+           </item>
+           <item row="27" column="0">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="12" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>Опыт работы:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Искать только:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="25" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_clearTable">
+             <property name="text">
+              <string>Очистить таблицу</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
+            <widget class="QLineEdit" name="lE_keywords">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Ключевые слова</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QCheckBox" name="cB_only_description">
+             <property name="text">
+              <string>В описании вакансии</string>
+             </property>
+             <property name="search_field_id" stdset="0">
+              <UInt>2</UInt>
+             </property>
+            </widget>
+           </item>
+           <item row="22" column="0" colspan="2">
+            <widget class="QSpinBox" name="sB_per_page">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100</number>
+             </property>
+             <property name="singleStep">
+              <number>10</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
             </widget>
            </item>
            <item row="9" column="0" colspan="2">
@@ -470,7 +625,7 @@
              </item>
             </widget>
            </item>
-           <item row="20" column="0" colspan="2">
+           <item row="18" column="0" colspan="2">
             <widget class="QComboBox" name="cB_order">
              <item>
               <property name="text">
@@ -494,127 +649,7 @@
              </item>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="text">
-              <string>Искать только:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Фильтры:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="21" column="0">
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Период:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="25" column="0" colspan="2">
-            <widget class="QSpinBox" name="sB_per_page">
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="singleStep">
-              <number>10</number>
-             </property>
-             <property name="value">
-              <number>50</number>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="0">
-            <widget class="QCheckBox" name="cB_only_description">
-             <property name="text">
-              <string>В описании вакансии</string>
-             </property>
-             <property name="search_field_id" stdset="0">
-              <UInt>2</UInt>
-             </property>
-            </widget>
-           </item>
-           <item row="28" column="0" colspan="2">
-            <widget class="QPushButton" name="pB_getVanacy">
-             <property name="text">
-              <string>Получить список вакансий</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QLineEdit" name="lE_keywords">
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="placeholderText">
-              <string>Ключевые слова</string>
-             </property>
-            </widget>
-           </item>
-           <item row="23" column="0">
-            <widget class="QLabel" name="label_8">
-             <property name="text">
-              <string>Количество результатов:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QCheckBox" name="cB_only_company_name">
-             <property name="text">
-              <string>В названии компании</string>
-             </property>
-             <property name="search_field_id" stdset="0">
-              <UInt>1</UInt>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QCheckBox" name="cB_only_name">
-             <property name="text">
-              <string>В названии вакансии</string>
-             </property>
-             <property name="search_field_id" stdset="0">
-              <UInt>0</UInt>
-             </property>
-            </widget>
-           </item>
-           <item row="13" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>Опыт работы:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="22" column="0" colspan="2">
-            <widget class="QDateEdit" name="dE_period">
-             <property name="toolTip">
-              <string>Дата, которая ограничивает снизу диапазон дат публикации вакансий.</string>
-             </property>
-            </widget>
-           </item>
-           <item row="18" column="0" colspan="2">
-            <widget class="QCheckBox" name="cB_only_with_salary">
-             <property name="text">
-              <string>Только вакансии с указанным уровнем дохода</string>
-             </property>
-            </widget>
-           </item>
-           <item row="16" column="0">
+           <item row="15" column="0">
             <widget class="QSpinBox" name="sB_salary">
              <property name="toolTip">
               <string>Например: при указании 100 EUR будут найдены вакансии, где вилка зарплаты указана в рублях и после пересчёта в Евро близка к 100 EUR.</string>
@@ -630,17 +665,20 @@
              </property>
             </widget>
            </item>
-           <item row="7" column="0" colspan="2">
-            <widget class="QComboBox" name="cB_region">
-             <property name="toolTip">
-              <string/>
+           <item row="31" column="0">
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
-             <property name="placeholderText">
-              <string/>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
              </property>
-            </widget>
+            </spacer>
            </item>
-           <item row="14" column="0" colspan="2">
+           <item row="13" column="0" colspan="2">
             <widget class="QComboBox" name="cB_experience">
              <property name="toolTip">
               <string/>
@@ -675,13 +713,6 @@
              </item>
             </widget>
            </item>
-           <item row="29" column="0" colspan="2">
-            <widget class="QPushButton" name="pB_exportToXML">
-             <property name="text">
-              <string>Выгрузить данные</string>
-             </property>
-            </widget>
-           </item>
            <item row="6" column="0">
             <widget class="QLabel" name="label_5">
              <property name="text">
@@ -689,71 +720,67 @@
              </property>
             </widget>
            </item>
-           <item row="16" column="1">
-            <widget class="QComboBox" name="cB_currency">
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <item>
-              <property name="text">
-               <string>₽</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>$</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>€</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item row="19" column="0">
-            <widget class="QLabel" name="label">
+           <item row="16" column="0" colspan="2">
+            <widget class="QCheckBox" name="cB_only_with_salary">
              <property name="text">
-              <string>Сортировка:</string>
+              <string>Только вакансии с указанным уровнем дохода</string>
              </property>
             </widget>
            </item>
-           <item row="26" column="0" colspan="2">
-            <spacer name="verticalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
+           <item row="4" column="0">
+            <widget class="QCheckBox" name="cB_only_company_name">
+             <property name="text">
+              <string>В названии компании</string>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
+             <property name="search_field_id" stdset="0">
+              <UInt>1</UInt>
              </property>
-            </spacer>
+            </widget>
            </item>
-           <item row="15" column="0">
+           <item row="14" column="0">
             <widget class="QLabel" name="label_9">
              <property name="text">
               <string>Уровень дохода:</string>
              </property>
             </widget>
            </item>
-           <item row="10" column="0" colspan="2">
+           <item row="19" column="0">
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Период:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="10" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
               <string>Занятоcть:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_2">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Фильтры:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="33" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_getVanacy">
+             <property name="text">
+              <string>Получить список вакансий</string>
+             </property>
+            </widget>
+           </item>
+           <item row="24" column="0" colspan="2">
+            <widget class="QPushButton" name="pB_exportToXML">
+             <property name="text">
+              <string>Выгрузить данные</string>
              </property>
             </widget>
            </item>

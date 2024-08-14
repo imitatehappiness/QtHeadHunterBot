@@ -26,6 +26,10 @@ public:
     void enableMaximum(bool enable);
     /// Show or hide the window close button.
     void enableClose(bool enable);
+    /// init tray menu
+    void initTrayMenu();
+public slots:
+    void show();
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -57,7 +61,7 @@ private:
     Ui::WindowFrame *ui;
     /// Pointer to the main widget (child widget).
     QWidget *mMainBody;
-    /// Window mPosition on the screen.
+    /// Window this->mPosition on the screen.
     QPoint mPosition;
     /// Size of the window borders for resize.
     int mBorderSize;
@@ -65,5 +69,7 @@ private:
     bool mIsCollapse;
     /// Main window.
     QWidget *mChild;
+    /// Tray menu
+    QMenu *mTrayMenu;
 };
 

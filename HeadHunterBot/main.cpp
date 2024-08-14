@@ -42,7 +42,6 @@ int main(int argc, char *argv[]){
         a.installTranslator(&qtBaseTranslator);
     }
 
-
     WindowFrame w(nullptr, new MainWindow());
     w.show();
     return a.exec();

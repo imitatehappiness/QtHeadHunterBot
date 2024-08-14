@@ -20,14 +20,12 @@
 #include <QXmlStreamWriter>
 
 const QString TOUCH_URL = "https://hh.ru/applicant/resumes/touch";
-const QString LOGO_PATH = ":/resources/icons/hh-logo.png";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , mResumeSettingMenu(new QMenu(HHManager::promotion,this))
     , mParsingSettingMenu(new QMenu(HHManager::parsingResume,this))
-    , mTrayMenu(new QMenu(this))
 {
     qDebug()<<"QSslSocket="<<QSslSocket::sslLibraryBuildVersionString();
     ui->setupUi(this);
@@ -39,7 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->mResumeManager = new HHManager::ResumeManager();
 
     this->initResumeSettingMenu();
-    this->initTrayMenu();
 
     connect(this->mVacancyManager, SIGNAL(updateTable()), this, SLOT(updateVacancyTable()));
     connect(this->mVacancyManager, SIGNAL(updateAreas()), this, SLOT(updateRegionCb()));
@@ -52,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
     QDate currentDate = QDate::currentDate();
     QDate period = currentDate.addDays(-5);
 
-    this->headers = QStringList()
+    this->mHeaders = QStringList()
             << ""
             << HHManager::idHeader
             << HHManager::nameHeader
@@ -65,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
             << HHManager::publicationDateHeader;
 
     ui->dE_period->setDate(period);
+    updateVacancyTable();
 }
 
 MainWindow::~MainWindow(){
@@ -78,8 +76,8 @@ void MainWindow::closeEvent(QCloseEvent *event){
     }
 }
 
-void MainWindow::show(){
-    if(!isHidden()){
+void MainWindow::show(){    
+    if(!this->isHidden()){
         this->showNormal();
         this->activateWindow();
     }else{
@@ -107,16 +105,6 @@ void MainWindow::saveResumeParams(){
     if("" != fileName){
         this->setResumeParams();
         HHManager::ResumeSettings::instance().saveSettings(fileName);
-    }
-}
-
-void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason){
-    switch (reason){
-    case QSystemTrayIcon::Trigger:
-        !this->isVisible() ? this->show() : this->hide();
-        break;
-    default:
-        break;
     }
 }
 
@@ -228,32 +216,6 @@ void MainWindow::initResumeSettingMenu() {
     menuBar()->addMenu(mParsingSettingMenu);
 }
 
-void MainWindow::initTrayMenu(){
-    QSystemTrayIcon* trayIcon = new QSystemTrayIcon(this);
-    QAction* viewWindow = new QAction(HHManager::openParamsPanel, this);
-    QAction* quitAction = new QAction(HHManager::exitApp, this);
-
-    this->mTrayMenu->addAction(viewWindow);
-    this->mTrayMenu->addAction(quitAction);
-
-    trayIcon->setIcon((QIcon(LOGO_PATH)));
-    trayIcon->setContextMenu(mTrayMenu);
-    trayIcon->show();
-
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(iconActivated(QSystemTrayIcon::ActivationReason)));
-    connect(viewWindow, SIGNAL(triggered()), this, SLOT(show()));
-
-    QObject::connect(quitAction, &QAction::triggered, this, [this](){
-        QMessageBox::StandardButton reply;
-        reply = QMessageBox::question(this, TITLE, HHManager::confirmExit + "\n", QMessageBox::Yes | QMessageBox::No);
-        if (reply == QMessageBox::No) {
-            show();
-        }else if (reply == QMessageBox::Yes) {
-            QApplication::quit();
-        }
-    });
-}
-
 void MainWindow::updateTurnBtn(QString text, bool value){
     ui->pB_turn->setProperty("turn", value);
     ui->pB_turn->setText(text);
@@ -283,14 +245,14 @@ void MainWindow::exportTableToXml(){
     xmlWriter.writeStartDocument();
     xmlWriter.writeStartElement("Table");
 
-    int columnCount = headers.size();
+    int columnCount = this->mHeaders.size();
 
     // Write header
     xmlWriter.writeStartElement("Header");
     for (int column = 1; column < columnCount; ++column) {
         xmlWriter.writeStartElement("Column");
         xmlWriter.writeAttribute("index", QString::number(column));
-        xmlWriter.writeCharacters(headers.at(column));
+        xmlWriter.writeCharacters(this->mHeaders.at(column));
         xmlWriter.writeEndElement(); // Column
     }
     xmlWriter.writeEndElement(); // Header
@@ -315,7 +277,7 @@ void MainWindow::exportTableToXml(){
                 if (item) {
                     xmlWriter.writeStartElement("Column");
                     xmlWriter.writeAttribute("index", QString::number(column));
-                    xmlWriter.writeAttribute("field", headers.at(column));
+                    xmlWriter.writeAttribute("field", this->mHeaders.at(column));
                     xmlWriter.writeCharacters(item->text());
                     xmlWriter.writeEndElement(); // Column
                 }
@@ -354,7 +316,7 @@ void MainWindow::updateVacancyTable() {
     ui->tW_vacancy->sortItems(-1);
 
     // Set the number of columns
-    ui->tW_vacancy->setColumnCount(headers.size());
+    ui->tW_vacancy->setColumnCount(this->mHeaders.size());
     // Enable grid
     ui->tW_vacancy->setShowGrid(true);
     // Disable selection
@@ -362,7 +324,7 @@ void MainWindow::updateVacancyTable() {
     // Enable row selection
     ui->tW_vacancy->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Set column headers
-    ui->tW_vacancy->setHorizontalHeaderLabels(headers);
+    ui->tW_vacancy->setHorizontalHeaderLabels(this->mHeaders);
     // Hide the first column
     ui->tW_vacancy->hideColumn(0);
     // Disable editing
@@ -436,11 +398,11 @@ void MainWindow::updateVacancyTable() {
     for (int i = 0; i < header->count(); ++i) {
         header->setSectionResizeMode(i, QHeaderView::ResizeToContents);
     }
-    header->setSectionResizeMode(headers.size() - 1, QHeaderView::Stretch);
+    header->setSectionResizeMode(this->mHeaders.size() - 1, QHeaderView::Stretch);
 
     ui->tW_vacancy->resizeColumnsToContents();
     ui->tW_vacancy->horizontalHeader()->setStretchLastSection(true);
-    ui->tW_vacancy->horizontalHeader()->setSectionResizeMode(headers.size() - 1, QHeaderView::Stretch);
+    ui->tW_vacancy->horizontalHeader()->setSectionResizeMode(this->mHeaders.size() - 1, QHeaderView::Stretch);
 }
 
 void MainWindow::on_pB_turn_clicked(){
@@ -562,4 +524,8 @@ void MainWindow::on_pB_exportToXML_clicked(){
     this->exportTableToXml();
 }
 
+void MainWindow::on_pB_clearTable_clicked(){
+    this->mVacancyManager->vacancies.clear();
+    updateVacancyTable();
+}
 

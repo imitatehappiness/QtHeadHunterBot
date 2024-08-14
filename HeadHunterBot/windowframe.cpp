@@ -6,8 +6,8 @@
 #include <windowsx.h>
 
 #include <QMouseEvent>
-
-
+#include <QSystemTrayIcon>
+#include <QMessageBox>
 
 const QString headerDefaultStyle = QStringLiteral(
     "#header {"
@@ -50,12 +50,13 @@ const QString defaultSizeIcon   = ":/resources/icons/default_size_light.png";
 /// @param parent The parent widget.
 /// @param child The child widget to be added to the window (optional).
 WindowFrame::WindowFrame(QWidget *parent, QWidget *child)
-    : QFrame(parent), ui(new Ui::WindowFrame), mChild(child){
+    : QFrame(parent), ui(new Ui::WindowFrame), mChild(child), mTrayMenu(new QMenu(this)){
 
     ui->setupUi(this);
-    mBorderSize = 5;
+    this->mBorderSize = 5;
 
     initIcons();
+    initTrayMenu();
 
     ui->title->setText(TITLE);
 
@@ -67,7 +68,7 @@ WindowFrame::WindowFrame(QWidget *parent, QWidget *child)
         mMainBody->installEventFilter(this);
         resize(child->size());
     }
-    mIsCollapse = false;
+    this->mIsCollapse = false;
 }
 
 /// @brief Destructor for the WindowFrame class.
@@ -78,7 +79,7 @@ WindowFrame::~WindowFrame(){
 void WindowFrame::closeEvent(QCloseEvent *event){
     if(this->isVisible()){
         event->ignore();
-        mChild->hide();
+        this->mChild->hide();
     }
 }
 
@@ -117,7 +118,7 @@ void WindowFrame::on_close_clicked(){
 void WindowFrame::on_maximum_clicked(){
     if(isMaximized()) {
         ui->maximum->setIcon(QIcon(maximizeIcon));
-        mIsCollapse ? ui->header->setStyleSheet(headerCollapseStyle) : ui->header->setStyleSheet(headerDefaultStyle);
+        this->mIsCollapse ? ui->header->setStyleSheet(headerCollapseStyle) : ui->header->setStyleSheet(headerDefaultStyle);
         showNormal();
     } else {
         ui->maximum->setIcon(QIcon(defaultSizeIcon));
@@ -133,14 +134,14 @@ void WindowFrame::on_minimum_clicked(){
 
 /// @brief Handler for the "Collapse" button click signal.
 void WindowFrame::on_collapse_clicked() {
-    if (mIsCollapse) {
+    if (this->mIsCollapse) {
         ui->body->setVisible(true);
-        mIsCollapse = false;
+        this->mIsCollapse = false;
         ui->collapse->setIcon(QIcon(collapseHideIcon));
         isMaximized() ? ui->header->setStyleSheet(headerMaximizeStyle) : ui->header->setStyleSheet(headerDefaultStyle);
     } else {
         ui->body->setVisible(false);
-        mIsCollapse = true;
+        this->mIsCollapse = true;
         ui->collapse->setIcon(QIcon(collapseShowIcon));
         isMaximized() ? ui->header->setStyleSheet(headerMaximizeStyle) : ui->header->setStyleSheet(headerCollapseStyle);
     }
@@ -153,8 +154,8 @@ void WindowFrame::mousePressEvent(QMouseEvent *event) {
     if (event->buttons() == Qt::LeftButton) {
         QWidget* widget = childAt(event->x(), event->y());
         if(widget == ui->LHeader || widget == ui->title || widget == ui->icon) {
-            mPosition.setX(event->x());
-            mPosition.setY(event->y());
+            this->mPosition.setX(event->x());
+            this->mPosition.setY(event->y());
         }
     }
     if (event->button() == Qt::RightButton ) {
@@ -170,8 +171,8 @@ void WindowFrame::mousePressEvent(QMouseEvent *event) {
 /// @return No return value.
 void WindowFrame::mouseMoveEvent(QMouseEvent *event) {
     if (event->buttons() == Qt::LeftButton) {
-        if (mPosition.x() != 0 || mPosition.y() != 0) {
-            move(event->globalX() - mPosition.x(), event->globalY() - mPosition.y());
+        if (this->mPosition.x() != 0 || this->mPosition.y() != 0) {
+            move(event->globalX() - this->mPosition.x(), event->globalY() - this->mPosition.y());
         }
     }
 }
@@ -180,8 +181,8 @@ void WindowFrame::mouseMoveEvent(QMouseEvent *event) {
 /// @param event Pointer to the mouse release event object (QMouseEvent).
 void WindowFrame::mouseReleaseEvent(QMouseEvent *event) {
     Q_UNUSED(event);
-    mPosition.setX(0);
-    mPosition.setY(0);
+    this->mPosition.setX(0);
+    this->mPosition.setY(0);
 }
 
 /// @brief Handler for the mouse double-click event within the window.
@@ -219,25 +220,25 @@ bool WindowFrame::nativeEvent(const QByteArray &eventType, void *message, long *
         int nX = localPos.x();
         int nY = localPos.y();
 
-        if (nX >= 0 && nX < mBorderSize) {
-            if (nY >= 0 && nY < mBorderSize) {
+        if (nX >= 0 && nX < this->mBorderSize) {
+            if (nY >= 0 && nY < this->mBorderSize) {
                 *result = HTTOPLEFT;
-            } else if (nY >= height() - mBorderSize) {
+            } else if (nY >= height() - this->mBorderSize) {
                 *result = HTBOTTOMLEFT;
             } else {
                 *result = HTLEFT;
             }
-        } else if (nX >= width() - mBorderSize) {
-            if (nY >= 0 && nY < mBorderSize) {
+        } else if (nX >= width() - this->mBorderSize) {
+            if (nY >= 0 && nY < this->mBorderSize) {
                 *result = HTTOPRIGHT;
-            } else if (nY >= height() - mBorderSize) {
+            } else if (nY >= height() - this->mBorderSize) {
                 *result = HTBOTTOMRIGHT;
             } else {
                 *result = HTRIGHT;
             }
-        } else if (nY >= 0 && nY < mBorderSize) {
+        } else if (nY >= 0 && nY < this->mBorderSize) {
             *result = HTTOP;
-        } else if (nY >= height() - mBorderSize) {
+        } else if (nY >= height() - this->mBorderSize) {
             *result = HTBOTTOM;
         } else {
             return QWidget::nativeEvent(eventType, message, result);
@@ -265,6 +266,43 @@ void WindowFrame::enableMaximum(bool enable) {
 /// @param enable If true, the button will be shown; if false, it will be hidden.
 void WindowFrame::enableClose(bool enable) {
     !enable ? ui->close->hide() : ui->close->show();
+}
+
+void WindowFrame::initTrayMenu(){
+    QSystemTrayIcon* trayIcon = new QSystemTrayIcon(this);
+    QAction* viewWindow = new QAction(HHManager::openParamsPanel, this);
+    QAction* quitAction = new QAction(HHManager::exitApp, this);
+
+    this->mTrayMenu->addAction(viewWindow);
+    this->mTrayMenu->addAction(quitAction);
+
+    trayIcon->setIcon((QIcon(LOGO_PATH)));
+    trayIcon->setContextMenu(this->mTrayMenu);
+    trayIcon->show();
+
+    QObject::connect(viewWindow, &QAction::triggered, this, [this](){
+        show();
+        this->mChild->show();
+    });
+
+    QObject::connect(quitAction, &QAction::triggered, this, [this](){
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, TITLE, HHManager::confirmExit + "\n", QMessageBox::Yes | QMessageBox::No);
+        if (reply == QMessageBox::No) {
+            show();
+        }else if (reply == QMessageBox::Yes) {
+            QApplication::quit();
+        }
+    });
+}
+
+void WindowFrame::show(){
+    if(!this->isHidden()){
+        this->showNormal();
+        this->activateWindow();
+    }else{
+        QWidget::show();
+    }
 }
 
 /// @brief Override event filtering function for the WindowFrame class.

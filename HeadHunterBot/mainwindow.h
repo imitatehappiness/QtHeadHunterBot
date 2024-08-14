@@ -28,7 +28,6 @@ public slots:
 private slots:
     void loadResumeParams();
     void saveResumeParams();
-    void iconActivated(QSystemTrayIcon::ActivationReason reason);
     void updateVacancyTable();
     void updateRegionCb();
     void updateTurnBtn(QString text, bool value);
@@ -44,19 +43,20 @@ private slots:
     void on_pB_clear_resume_log_clicked();
     void on_dE_period_userDateChanged(const QDate &date);
     void on_pB_exportToXML_clicked();
+    void on_pB_clearTable_clicked();
+
 private:
     void setResumeParams();
     void playSound(const QString& path);
     bool checkCorrectlyFields();
     bool hasMatch(const QString& re, const QString& text);
     void initResumeSettingMenu();
-    void initTrayMenu();
     void exportTableToXml();
     QString getCurrentDateTime();
 private:
     Ui::MainWindow *ui;
-    QMenu *mResumeSettingMenu, *mParsingSettingMenu, *mTrayMenu;
-    QStringList headers;
+    QMenu *mResumeSettingMenu, *mParsingSettingMenu;
+    QStringList mHeaders;
     HHManager::VacancyManager *mVacancyManager;
     HHManager::ResumeManager *mResumeManager;
 };

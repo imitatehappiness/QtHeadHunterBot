@@ -137,6 +137,7 @@ QPushButton#close, QPushButton#collapse, QPushButton#maximum, QPushButton#minimu
 QMenuBar{
     background-color: rgb(33, 33, 33);
     color: #eee;
+    padding-top: 3px;
 }
 
 QPushButton#collapse:hover, QPushButton#maximum:hover, QPushButton#minimum:hover{

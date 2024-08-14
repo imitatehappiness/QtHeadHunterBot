@@ -4,6 +4,7 @@
 
 const QString AUTHOR = "@imitatehappiness";
 const QString TITLE = AUTHOR + " | hh-bot";
+const QString LOGO_PATH = ":/resources/icons/hh-logo.png";
 
 namespace HHManager
 {
@@ -39,7 +40,7 @@ namespace HHManager
     const QString promotion              = "Продвижение";
     const QString parsingResume          = "Парсинг резюме";
 
-    const QString idHeader               = "ID";
+    const QString idHeader               = "ID (Ссылка)";
     const QString nameHeader             = "Название";
     const QString companyHeader          = "Компания";
     const QString experienceHeader       = "Требуемый опыт работы";
