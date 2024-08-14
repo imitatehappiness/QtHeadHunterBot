@@ -2,6 +2,9 @@
 
 #include <QObject>
 
+const QString AUTHOR = "@imitatehappiness";
+const QString TITLE = AUTHOR + " | hh-bot";
+
 namespace HHManager
 {
     const QString readError              = "Ошибка чтения";

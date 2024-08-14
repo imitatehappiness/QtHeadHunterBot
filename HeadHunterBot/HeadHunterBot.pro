@@ -13,16 +13,19 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     resumemanager.cpp \
-    vacancymanager.cpp
+    vacancymanager.cpp \
+    windowframe.cpp
 
 HEADERS += \
     mainwindow.h \
     resumemanager.h \
     ru_locale.h \
-    vacancymanager.h
+    vacancymanager.h \
+    windowframe.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    windowframe.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

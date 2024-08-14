@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ru_locale.h"
+#include "windowframe.h"
 
 #include <QApplication>
 #include <QProxyStyle>
@@ -42,7 +43,7 @@ int main(int argc, char *argv[]){
     }
 
 
-    MainWindow w;
+    WindowFrame w(nullptr, new MainWindow());
     w.show();
     return a.exec();
 }

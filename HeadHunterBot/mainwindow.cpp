@@ -19,10 +19,8 @@
 #include <QTableWidget>
 #include <QXmlStreamWriter>
 
-const QString AUTHOR = "@imitatehappiness";
 const QString TOUCH_URL = "https://hh.ru/applicant/resumes/touch";
 const QString LOGO_PATH = ":/resources/icons/hh-logo.png";
-const QString TITLE = AUTHOR + " | hh-bot";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,7 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     qDebug()<<"QSslSocket="<<QSslSocket::sslLibraryBuildVersionString();
     ui->setupUi(this);
-    setWindowTitle(TITLE);
+
+    this->statusBar()->setSizeGripEnabled(false);
 
     this->mVacancyManager = new HHManager::VacancyManager();
     this->mVacancyManager->getAreas();
