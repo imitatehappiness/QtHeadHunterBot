@@ -113,70 +113,125 @@ windeployqt --compiler-runtime C:\project_folder\HeadHunterBot.exe
 <?xml version="1.0" encoding="UTF-8"?>
 <Table>
     <Header>
-        <Column index="1">ID</Column>
+        <Column index="1">ID (Ссылка)</Column>
         <Column index="2">Название</Column>
         <Column index="3">Компания</Column>
-        <Column index="4">Требуемый опыт работы</Column>
+        <Column index="4">Формат</Column>
         <Column index="5">Регион</Column>
-        <Column index="6">Формат</Column>
+        <Column index="6">Требуемый опыт работы</Column>
         <Column index="7">Занятость</Column>
         <Column index="8">Зарплата</Column>
         <Column index="9">Дата публикации</Column>
     </Header>
     <Row>
-        <Column index="1" field="URL">https://hh.ru/vacancy/97036056</Column>
-        <Column index="2" field="Название">Программист С++/Qt</Column>
-        <Column index="3" field="Компания">ITGLOBAL.COM</Column>
-        <Column index="4" field="Требуемый опыт работы">Полный день</Column>
-        <Column index="5" field="Регион">Санкт-Петербург</Column>
-        <Column index="6" field="Формат">От 1 года до 3 лет</Column>
-        <Column index="7" field="Занятость">Полная занятость</Column>
-        <Column index="8" field="Зарплата">От 100000 до 300000 RUR</Column>
-        <Column index="9" field="Дата публикации">2024-05-15 16:52:08 +0300</Column>
-    </Row>
-    <Row>
-        <Column index="1" field="URL">https://hh.ru/vacancy/99059414</Column>
+        <Column index="1" field="URL">https://hh.ru/vacancy/102454089</Column>
         <Column index="2" field="Название">Разработчик C++ (Qt) системы взаимодействия с электронным оборудованием</Column>
-        <Column index="3" field="Компания">Крипто-Сервис</Column>
-        <Column index="4" field="Требуемый опыт работы">Полный день</Column>
+        <Column index="3" field="Компания">НацИнфоБез</Column>
+        <Column index="4" field="Формат">Полный день</Column>
         <Column index="5" field="Регион">Москва</Column>
-        <Column index="6" field="Формат">От 3 до 6 лет</Column>
+        <Column index="6" field="Требуемый опыт работы">От 3 до 6 лет</Column>
         <Column index="7" field="Занятость">Полная занятость</Column>
-        <Column index="8" field="Зарплата">От 180000 до 250000 RUR до вычета налогов</Column>
-        <Column index="9" field="Дата публикации">2024-05-15 16:00:11 +0300</Column>
+        <Column index="8" field="Зарплата">От 180000 До 300000 RUR до вычета налогов</Column>
+        <Column index="9" field="Дата публикации">2024-08-14 17:58:29 +0300</Column>
     </Row>
     <Row>
-        <Column index="1" field="URL">https://hh.ru/vacancy/98551646</Column>
-        <Column index="2" field="Название">Инженер-программист C++/Qt, медоборудование</Column>
-        <Column index="3" field="Компания">НИИТФА</Column>
-        <Column index="4" field="Требуемый опыт работы">Полный день</Column>
-        <Column index="5" field="Регион">Москва</Column>
-        <Column index="6" field="Формат">От 3 до 6 лет</Column>
+        <Column index="1" field="URL">https://hh.ru/vacancy/102206325</Column>
+        <Column index="2" field="Название">Разработчик C++/Qt</Column>
+        <Column index="3" field="Компания">Иторум</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Рязань</Column>
+        <Column index="6" field="Требуемый опыт работы">От 1 года до 3 лет</Column>
         <Column index="7" field="Занятость">Полная занятость</Column>
-        <Column index="8" field="Зарплата">От 150000 RUR</Column>
-        <Column index="9" field="Дата публикации">2024-05-15 12:36:47 +0300</Column>
+        <Column index="8" field="Зарплата">От 107300 RUR до вычета налогов</Column>
+        <Column index="9" field="Дата публикации">2024-08-14 15:53:57 +0300</Column>
     </Row>
     <Row>
-        <Column index="1" field="URL">https://hh.ru/vacancy/98436934</Column>
-        <Column index="2" field="Название">Программист / Разработчик С++ (Qt)</Column>
-        <Column index="3" field="Компания">Евротех</Column>
-        <Column index="4" field="Требуемый опыт работы">Полный день</Column>
-        <Column index="5" field="Регион">Москва</Column>
-        <Column index="6" field="Формат">Нет опыта</Column>
+        <Column index="1" field="URL">https://hh.ru/vacancy/105808966</Column>
+        <Column index="2" field="Название">Инженер-программист С++/Qt (проект Энергосфера)</Column>
+        <Column index="3" field="Компания">Прософт-Системы</Column>
+        <Column index="4" field="Формат">Удаленная работа</Column>
+        <Column index="5" field="Регион">Екатеринбург</Column>
+        <Column index="6" field="Требуемый опыт работы">Более 6 лет</Column>
         <Column index="7" field="Занятость">Полная занятость</Column>
-        <Column index="8" field="Зарплата">От 150000 до 220000 RUR</Column>
-        <Column index="9" field="Дата публикации">2024-05-15 09:26:23 +0300</Column>
+        <Column index="8" field="Зарплата">От 150000 До 200000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-14 15:35:06 +0300</Column>
     </Row>
     <Row>
-        <Column index="1" field="URL">https://hh.ru/vacancy/91895639</Column>
+        <Column index="1" field="URL">https://hh.ru/vacancy/104485052</Column>
+        <Column index="2" field="Название">Инженер-программист С++/Qt</Column>
+        <Column index="3" field="Компания">Группа Компаний ИСТА</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Санкт-Петербург</Column>
+        <Column index="6" field="Требуемый опыт работы">От 1 года до 3 лет</Column>
+        <Column index="7" field="Занятость">Полная занятость</Column>
+        <Column index="8" field="Зарплата">От 100000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-13 18:16:36 +0300</Column>
+    </Row>
+    <Row>
+        <Column index="1" field="URL">https://hh.ru/vacancy/103309235</Column>
+        <Column index="2" field="Название">Разработчик С++(Qt)</Column>
+        <Column index="3" field="Компания">ProfiStaff</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Москва</Column>
+        <Column index="6" field="Требуемый опыт работы">От 3 до 6 лет</Column>
+        <Column index="7" field="Занятость">Полная занятость</Column>
+        <Column index="8" field="Зарплата">От 200000 До 270000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-13 09:26:23 +0300</Column>
+    </Row>
+    <Row>
+        <Column index="1" field="URL">https://hh.ru/vacancy/105690231</Column>
+        <Column index="2" field="Название">Математик-программист (BackEnd, Qt)</Column>
+        <Column index="3" field="Компания">НЭПТ</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Москва</Column>
+        <Column index="6" field="Требуемый опыт работы">От 3 до 6 лет</Column>
+        <Column index="7" field="Занятость">Полная занятость</Column>
+        <Column index="8" field="Зарплата">От 200000 До 300000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-12 16:57:15 +0300</Column>
+    </Row>
+    <Row>
+        <Column index="1" field="URL">https://hh.ru/vacancy/105332251</Column>
+        <Column index="2" field="Название">Программист С++/Qt (junior)</Column>
+        <Column index="3" field="Компания">Аргун-Софт</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Санкт-Петербург</Column>
+        <Column index="6" field="Требуемый опыт работы">Нет опыта</Column>
+        <Column index="7" field="Занятость">Полная занятость</Column>
+        <Column index="8" field="Зарплата">От 80000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-12 15:56:31 +0300</Column>
+    </Row>
+    <Row>
+        <Column index="1" field="URL">https://hh.ru/vacancy/104985185</Column>
         <Column index="2" field="Название">Программист С++/Qt, junior</Column>
         <Column index="3" field="Компания">НТЦ Радуга</Column>
-        <Column index="4" field="Требуемый опыт работы">Полный день</Column>
+        <Column index="4" field="Формат">Полный день</Column>
         <Column index="5" field="Регион">Москва</Column>
-        <Column index="6" field="Формат">От 1 года до 3 лет</Column>
+        <Column index="6" field="Требуемый опыт работы">От 1 года до 3 лет</Column>
         <Column index="7" field="Занятость">Полная занятость</Column>
-        <Column index="8" field="Зарплата">От 80000 до 120000 RUR до вычета налогов</Column>
-        <Column index="9" field="Дата публикации">2024-05-14 16:57:09 +0300</Column>
+        <Column index="8" field="Зарплата">От 80000 До 120000 RUR до вычета налогов</Column>
+        <Column index="9" field="Дата публикации">2024-08-12 15:38:17 +0300</Column>
+    </Row>
+    <Row>
+        <Column index="1" field="URL">https://hh.ru/vacancy/105328061</Column>
+        <Column index="2" field="Название">Разработчик / Remote Gaming Developer (C++/Qt)</Column>
+        <Column index="3" field="Компания">ДТЛ</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Москва</Column>
+        <Column index="6" field="Требуемый опыт работы">От 3 до 6 лет</Column>
+        <Column index="7" field="Занятость">Полная занятость</Column>
+        <Column index="8" field="Зарплата">От 250000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-12 14:56:32 +0300</Column>
+    </Row>
+    <Row>
+        <Column index="1" field="URL">https://hh.ru/vacancy/99221786</Column>
+        <Column index="2" field="Название">Senior C++/Qt/QML разработчик в команду Android</Column>
+        <Column index="3" field="Компания">2ГИС</Column>
+        <Column index="4" field="Формат">Полный день</Column>
+        <Column index="5" field="Регион">Москва</Column>
+        <Column index="6" field="Требуемый опыт работы">От 3 до 6 лет</Column>
+        <Column index="7" field="Занятость">Полная занятость</Column>
+        <Column index="8" field="Зарплата">От 250000 До 600000 RUR</Column>
+        <Column index="9" field="Дата публикации">2024-08-12 14:31:10 +0300</Column>
     </Row>
 </Table>
 ```
