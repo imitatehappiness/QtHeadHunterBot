@@ -9,7 +9,6 @@
 
 ![GitHub stars](https://img.shields.io/github/stars/imitatehappiness/QtHeadHunterBot?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/imitatehappiness/QtHeadHunterBot?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/imitatehappiness/QtHeadHunterBot?style=social)
 ![GitHub followers](https://img.shields.io/github/followers/imitatehappiness?style=social)
 
 >**Compiler:**  MinGW 5.8.0 64bit
